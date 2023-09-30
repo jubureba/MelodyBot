@@ -1535,3 +1535,45 @@
 {"level":"info","message":"Comando \"skip\" foi acionado."}
 {"level":"info","message":"Comando \"skip\" concluído."}
 {"level":"info","message":"Áudio terminou de tocar."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Erro ao buscar e reproduzir o áudio: Error searching for video: i.trim is not a function","stack":"Error: Error searching for video: i.trim is not a function\n    at YouTubeAPI.search (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\YouTubeAPI.js:11:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:36:31)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Erro ao buscar e reproduzir o áudio: createCustomAdapter is not defined","stack":"ReferenceError: createCustomAdapter is not defined\n    at PlayCommand.createAudioPlayerAndConnect (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:123:29)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:54:36)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Erro ao buscar e reproduzir o áudio: Error searching for video: i.trim is not a function","stack":"Error: Error searching for video: i.trim is not a function\n    at YouTubeAPI.search (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\YouTubeAPI.js:11:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:39:31)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: Error searching for video: i.trim is not a function","stack":"Error: Error searching for video: i.trim is not a function\n    at YouTubeAPI.search (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\YouTubeAPI.js:11:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:35:31)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}

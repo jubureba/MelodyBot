@@ -1,19 +1,18 @@
 const { createAudioPlayer, createAudioResource, getVoiceConnection, AudioPlayerStatus } = require('@discordjs/voice');
-const YouTubeAPI = require('../modules/YouTubeAPI');
-const createCustomAdapter = require('./createCustomAdapter');
-const playdl = require('play-dl');
 const logger = require('../utils/loggerUtils');
+const createCustomAdapter = require('./createCustomAdapter');
 const MessagesUtils = require('../utils/messagesUtils');
+const YouTubeAPI = require('../modules/YouTubeAPI');
 
 class PlayCommand {
     constructor(bot) {
         this.bot = bot;
         this.name = 'play';
-        this.description = 'Play a song from YouTube or Spotify.';
+        this.description = 'Play a song from YouTube';
         this.youtubeAPI = new YouTubeAPI();
-        this.musicQueue = new Map(); // Use um mapa para armazenar a fila de reprodução por guildId
-        this.isPlaying = new Map(); // Use um mapa para rastrear o estado de reprodução por guildId
-        this.messages = {};
+        this.musicQueue = new Map();
+        this.isPlaying = new Map();
+        this.messages = new Map();
     }
 
     async execute(message, args) {
@@ -31,102 +30,93 @@ class PlayCommand {
         const guildId = message.guildId;
         const voiceChannelId = message.member.voice.channelId;
 
-        let audioPlayer = this.bot.audioPlayers.get(guildId);
-
         try {
-            let args = message.content.split('play')[1];
-            let videoInfo = await playdl.search(args, {
-                limit: 1
-            });
-            let stream = await playdl.stream(videoInfo[0].url)
-            let resource = createAudioResource(stream.stream, {
-                inputType: stream.type
-            });
 
-            // Verifique se já existe uma instância de MessagesUtils para este servidor
-            if (!this.messages[guildId]) {
-                this.messages[guildId] = new MessagesUtils(message.channel);
-                console.log('criei a instância.')
+            let args = message.content.split('play')[1];
+            const videoInfo = await this.youtubeAPI.search(args, { limit: 1 });
+
+            const streamInfo = await this.youtubeAPI.stream(videoInfo.url);
+            const resource = createAudioResource(streamInfo.stream, { inputType: streamInfo.type });
+
+            const messages = this.getOrCreateMessagesInstance(guildId, message.channel);
+
+            let audioPlayer = this.bot.audioPlayers.get(guildId);
+            if (!audioPlayer) {
+                audioPlayer = this.createAudioPlayerAndConnect(guildId, resource, voiceChannelId, message);
+                // Envie a mensagem inicial apenas no primeiro uso do comando
+                await messages.sendInitialMessage(videoInfo);
+            } else {
+                audioPlayer.queue.push(resource);
+                this.addToQueue(guildId, videoInfo, resource);
+                await messages.updateMessage(videoInfo);
             }
 
-            const messages = this.messages[guildId];
-
-            if (!audioPlayer) {
-                // Se não houver um audioPlayer para este servidor, crie um novo
-                const newAudioPlayer = createAudioPlayer();
-                this.bot.audioPlayers.set(guildId, newAudioPlayer);
-                audioPlayer = newAudioPlayer;
-
-                audioPlayer.queue = [];
-
-                // Salve as informações da música na fila de reprodução
-                this.musicQueue.set(guildId, [videoInfo[0]]); // Use um array para guardar as informações
-
+            if (audioPlayer.state.status === AudioPlayerStatus.Idle) {
+                // Se o audioPlayer estiver ocioso, inicie a reprodução
                 audioPlayer.play(resource);
-                let existingConnection = getVoiceConnection(guildId, voiceChannelId);
-
-                if (existingConnection) {
-                    existingConnection.subscribe(audioPlayer);
-                } else {
-                    existingConnection = new createCustomAdapter(audioPlayer, voiceChannelId, guildId, message);
-                    existingConnection.connect();
-                }
-
-                // Inicie a fila de reprodução para o servidor atual
-                this.musicQueue.set(guildId, [resource]);
-                this.isPlaying.set(guildId, true);
-
-                audioPlayer.on(AudioPlayerStatus.Idle, async () => {
-                    logger.info('Áudio terminou de tocar.');
-                    messages.removeCurrentSongFromQueue();
-
-                    if (audioPlayer.queue.length > 0) {
-                        const nextResource = audioPlayer.queue.shift();
-                        const nextSongInfo = messages.queue[0];
-                        if (nextSongInfo) {
-                            audioPlayer.play(nextResource);
-                            messages.setNowPlayingInfo(nextSongInfo);
-                            await messages.updateMessage(nextSongInfo);
-                        } else {
-                            // Não há informações da próxima música, você pode lidar com isso aqui
-                        }
-                    } else {
-                        // A fila de reprodução está vazia, você pode lidar com isso aqui
-                    }
-
-                });
-
-                audioPlayer.on('error', (error) => {
-                    logger.error('Erro ao reproduzir a música:', error);
-                });
-
-                await messages.sendInitialMessage(videoInfo[0]);
-            } else {
-                if (!audioPlayer.queue) {
-                    audioPlayer.queue = [];
-                }
-                audioPlayer.queue.push(resource);
-
-                // Adicione a música à fila de reprodução
-                //const queue = this.musicQueue.get(guildId);
-                /////queue.push(videoInfo[0]);
-                //queue.push(resource);
-
-                await messages.updateMessage(videoInfo[0]);
-
-                if (audioPlayer.state.status === AudioPlayerStatus.Idle) {
-                    audioPlayer.play(resource);
-                }
             }
         } catch (error) {
-            logger.error('Erro ao buscar e reproduzir o áudio:', error);
+            logger.error('Error:', error);
             message.channel.send('An error occurred while fetching and playing the audio.');
         }
     }
 
-    getNextSongInfo(guildId, messages) {
-        const nextSongInfo = messages.queue[0]; 
-        return nextSongInfo;
+    getOrCreateMessagesInstance(guildId, textChannel) {
+        if (!this.messages.has(guildId)) {
+            this.messages.set(guildId, new MessagesUtils(textChannel));
+            console.log('Created MessagesUtils instance.');
+        }
+        return this.messages.get(guildId);
+    }
+
+    createAudioPlayerAndConnect(guildId, resource, voiceChannelId, message) {
+        const newAudioPlayer = createAudioPlayer();
+        this.bot.audioPlayers.set(guildId, newAudioPlayer);
+
+        const existingConnection = getVoiceConnection(guildId, voiceChannelId);
+        if (existingConnection) {
+            existingConnection.subscribe(newAudioPlayer);
+        } else {
+            const adapter = new createCustomAdapter(newAudioPlayer, voiceChannelId, guildId, message);
+            adapter.connect();
+        }
+
+        newAudioPlayer.queue = [];
+        newAudioPlayer.on(AudioPlayerStatus.Idle, async () => {
+            this.handleIdleState(guildId, newAudioPlayer);
+        });
+        newAudioPlayer.on('error', (error) => {
+            logger.error('Error playing the song:', error);
+        });
+
+        return newAudioPlayer;
+    }
+
+    addToQueue(guildId, videoInfo, resource) {
+        if (!this.musicQueue.has(guildId)) {
+            this.musicQueue.set(guildId, []);
+        }
+        this.musicQueue.get(guildId).push({ videoInfo, resource });
+    }
+
+    handleIdleState(guildId, audioPlayer) {
+        const messages = this.messages.get(guildId);
+        messages.removeCurrentSongFromQueue();
+
+        if (audioPlayer.queue.length > 0) {
+            const nextResource = audioPlayer.queue.shift();
+            const nextSongInfo = this.musicQueue.get(guildId)[0];
+
+            if (nextSongInfo) {
+                audioPlayer.play(nextResource);
+                messages.setNowPlayingInfo(nextSongInfo.videoInfo);
+                messages.updateMessage(nextSongInfo.videoInfo);
+            } else {
+                // A fila de reprodução está vazia, você pode lidar com isso aqui
+            }
+        } else {
+            // A fila de reprodução está vazia, você pode lidar com isso aqui
+        }
     }
 }
 

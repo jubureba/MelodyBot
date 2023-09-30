@@ -100,10 +100,7 @@ class MessagesUtils {
 
     async removeCurrentSongFromQueue() {
         if (this.queue.length > 0) {
-            // Remove a música que acabou de tocar da fila
             this.queue.shift();
-
-            // Atualize a mensagem da fila para refletir as mudanças
             await this.updateQueue();
         }
     }

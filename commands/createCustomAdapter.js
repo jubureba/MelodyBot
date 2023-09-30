@@ -15,6 +15,7 @@ class CustomAdapter {
       guildId: this.guildId,
       adapterCreator: this.message.channel.guild.voiceAdapterCreator,
     });
+
     this.connection.subscribe(this.player);
   }
 
