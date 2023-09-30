@@ -11,13 +11,12 @@ class PlayCommand {
         this.name = 'play';
         this.description = 'Play a song from YouTube or Spotify.';
         this.youtubeAPI = new YouTubeAPI();
-        this.musicQueue = [];
-        this.isPlaying = false;
+        this.musicQueue = new Map(); // Use um mapa para armazenar a fila de reprodução por guildId
+        this.isPlaying = new Map(); // Use um mapa para rastrear o estado de reprodução por guildId
         this.messages = {};
     }
 
     async execute(message, args) {
-        logger.info('Comando "play" foi acionado.');
         const query = args.join(' ');
         if (!query) {
             message.channel.send('Please provide a search query.');
@@ -29,38 +28,29 @@ class PlayCommand {
             return;
         }
 
-        logger.info('Usuário está em um canal de voz.');
-
-        const video = await this.youtubeAPI.searchVideo(query);
-        if (!video) {
-            message.channel.send('Could not find the requested video on YouTube.');
-            return;
-        }
-
-        logger.info('Vídeo encontrado:', video);
-
         const guildId = message.guildId;
         const voiceChannelId = message.member.voice.channelId;
 
         let audioPlayer = this.bot.audioPlayers.get(guildId);
 
         try {
-            const argsForPlaydl = message.content.split('play')[1];
-            const videoInfo = await playdl.search(argsForPlaydl, {
+            let args = message.content.split('play')[1];
+            let videoInfo = await playdl.search(args, {
                 limit: 1
             });
-            const stream = await playdl.stream(videoInfo[0].url);
-            const resource = createAudioResource(stream.stream, {
+            let stream = await playdl.stream(videoInfo[0].url)
+            let resource = createAudioResource(stream.stream, {
                 inputType: stream.type
             });
 
             // Verifique se já existe uma instância de MessagesUtils para este servidor
             if (!this.messages[guildId]) {
                 this.messages[guildId] = new MessagesUtils(message.channel);
-                console.log('Criei a instância de MessagesUtils.');
+                console.log('criei a instância.')
             }
 
             const messages = this.messages[guildId];
+
             if (!audioPlayer) {
                 // Se não houver um audioPlayer para este servidor, crie um novo
                 const newAudioPlayer = createAudioPlayer();
@@ -69,21 +59,8 @@ class PlayCommand {
 
                 audioPlayer.queue = [];
 
-                audioPlayer.on(AudioPlayerStatus.Idle, async () => {
-                    logger.info('Áudio terminou de tocar.');
-                    messages.removeCurrentSongFromQueue();
-
-                    if (audioPlayer.queue.length > 0) {
-                        const nextResource = audioPlayer.queue.shift();
-                        const nextSongInfo = await messages.getSongInfoForNextSong(); // Use o vídeo atual
-                        audioPlayer.play(nextResource);
-                        messages.setNowPlayingInfo(nextSongInfo);
-                    }
-                });
-
-                audioPlayer.on('error', (error) => {
-                    logger.error('Erro ao reproduzir a música:', error);
-                });
+                // Salve as informações da música na fila de reprodução
+                this.musicQueue.set(guildId, [videoInfo[0]]); // Use um array para guardar as informações
 
                 audioPlayer.play(resource);
                 let existingConnection = getVoiceConnection(guildId, voiceChannelId);
@@ -95,27 +72,62 @@ class PlayCommand {
                     existingConnection.connect();
                 }
 
+                // Inicie a fila de reprodução para o servidor atual
+                this.musicQueue.set(guildId, [resource]);
+                this.isPlaying.set(guildId, true);
+
+                audioPlayer.on(AudioPlayerStatus.Idle, async () => {
+                    logger.info('Áudio terminou de tocar.');
+                    messages.removeCurrentSongFromQueue();
+
+                    if (audioPlayer.queue.length > 0) {
+                        const nextResource = audioPlayer.queue.shift();
+                        const nextSongInfo = messages.queue[0];
+                        if (nextSongInfo) {
+                            audioPlayer.play(nextResource);
+                            messages.setNowPlayingInfo(nextSongInfo);
+                            await messages.updateMessage(nextSongInfo);
+                        } else {
+                            // Não há informações da próxima música, você pode lidar com isso aqui
+                        }
+                    } else {
+                        // A fila de reprodução está vazia, você pode lidar com isso aqui
+                    }
+
+                });
+
+                audioPlayer.on('error', (error) => {
+                    logger.error('Erro ao reproduzir a música:', error);
+                });
+
                 await messages.sendInitialMessage(videoInfo[0]);
             } else {
                 if (!audioPlayer.queue) {
                     audioPlayer.queue = [];
                 }
                 audioPlayer.queue.push(resource);
+
+                // Adicione a música à fila de reprodução
+                //const queue = this.musicQueue.get(guildId);
+                /////queue.push(videoInfo[0]);
+                //queue.push(resource);
+
                 await messages.updateMessage(videoInfo[0]);
 
                 if (audioPlayer.state.status === AudioPlayerStatus.Idle) {
                     audioPlayer.play(resource);
                 }
             }
-
-            logger.info(`Bot conectado ao canal de voz: ${message.member.voice.channel.name}`);
-            logger.info('Comando "play" concluído.');
         } catch (error) {
             logger.error('Erro ao buscar e reproduzir o áudio:', error);
             message.channel.send('An error occurred while fetching and playing the audio.');
         }
     }
 
+    getNextSongInfo(guildId, messages) {
+        const nextSongInfo = messages.queue[0]; 
+        return nextSongInfo;
+    }
 }
 
 module.exports = PlayCommand;

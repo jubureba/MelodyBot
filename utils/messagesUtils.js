@@ -12,7 +12,7 @@ class MessagesUtils {
 
     async sendInitialMessage(songInfo) {
         this.playCount = 1;
-        this.queue.push(songInfo.title);
+        this.queue.push(songInfo);
         this.nowPlayingInfo = songInfo;
         const embed = this.createEmbed();
         this.message = await this.textChannel.send({ embeds: [embed] });
@@ -30,7 +30,7 @@ class MessagesUtils {
 
     async updateMessage(newSongInfo) {
         this.playCount++;
-        this.queue.push(newSongInfo.title);
+        this.queue.push(newSongInfo);
         this.updateQueue();
     }
 
@@ -68,17 +68,19 @@ class MessagesUtils {
                 : 'Aguardando início...',
             author: this.nowPlayingInfo
                 ? {
-                      name: this.nowPlayingInfo.title,
-                      icon_url: this.nowPlayingInfo.thumbnails[0].url,
-                  }
+                    name: this.nowPlayingInfo.title || 'Título Desconhecido',
+                    icon_url: this.nowPlayingInfo.thumbnails && this.nowPlayingInfo.thumbnails.length > 0
+                        ? this.nowPlayingInfo.thumbnails[0].url
+                        : 'https://i.ibb.co/Hg7tpbS/logo.png', 
+                }
                 : {},
             description: this.nowPlayingInfo
-                ? `Autor ${this.nowPlayingInfo.channel.name}`
+                ? `Autor ${this.nowPlayingInfo.channel ? this.nowPlayingInfo.channel.name || 'Desconhecido' : 'Desconhecido'}`
                 : '',
             fields: [
                 {
                     name: 'Duração',
-                    value: this.nowPlayingInfo ? this.nowPlayingInfo.durationRaw : '',
+                    value: this.nowPlayingInfo ? this.nowPlayingInfo.durationRaw || 'Desconhecida' : 'Desconhecida',
                 },
                 {
                     name: 'Fila',
@@ -90,15 +92,17 @@ class MessagesUtils {
                 icon_url: 'https://i.ibb.co/Hg7tpbS/logo.png',
             },
         };
-
+    
         return embed;
     }
+    
+    
 
     async removeCurrentSongFromQueue() {
         if (this.queue.length > 0) {
             // Remove a música que acabou de tocar da fila
             this.queue.shift();
-    
+
             // Atualize a mensagem da fila para refletir as mudanças
             await this.updateQueue();
         }
@@ -107,7 +111,7 @@ class MessagesUtils {
     async getSongInfo(resource) {
         try {
             const stream = await ytdl.getBasicInfo(resource.url);
-            
+
             return {
                 title: stream.videoDetails.title,
                 channel: {
@@ -123,22 +127,8 @@ class MessagesUtils {
         }
     }
 
-    async getSongInfoForNextSong() {
-        if (!this.nowPlayingInfo) {
-            return null; // Retorna null se não houver informações da próxima música
-        }
     
-        console.log('play info', this.nowPlayingInfo);
-        return {
-            title: this.nowPlayingInfo.title,
-            channel: {
-                name: this.nowPlayingInfo.channel.name,
-            },
-            durationRaw: this.nowPlayingInfo.durationRaw,
-            // Adicione outras informações que você deseja extrair
-            // da música, como URL da imagem da capa, etc.
-        };
-    }
+    
 
     clearMessage() {
         if (this.message) {
