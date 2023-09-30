@@ -4,6 +4,7 @@ const CommandManager = require('../CommandManager');
 const PlayCommand = require('../commands/play');
 const SkipCommand = require('../commands/skip');
 const StopCommand = require('../commands/stop');
+const QueueCommand = require('../commands/queue');
 const logger = require('../utils/loggerUtils');
 
 const intents = [
@@ -21,13 +22,16 @@ class DiscordBot extends Client {
         this.commandManager = new CommandManager();
         this.token = config.token;
         this.commandPrefix = config.prefix;
+        this.audioPlayers = new Map(); // Inicialize a mapa de audioPlayers
 
         const playCommand = new PlayCommand(this);
         const skipCommand = new SkipCommand(this);
         const stopCommand = new StopCommand(this);
+        const queueCommand = new QueueCommand(this);
         this.commandManager.registerCommand(playCommand);
         this.commandManager.registerCommand(skipCommand);
         this.commandManager.registerCommand(stopCommand);
+        this.commandManager.registerCommand(queueCommand);
     }
 
     async start() {
@@ -40,7 +44,7 @@ class DiscordBot extends Client {
             logger.info(`Logado no Servidor ${this.user.tag}`);
         });
 
-        this.on('messageCreate', async (message) => { // Use messageCreate em vez de message
+        this.on('messageCreate', async (message) => {
             if (message.author.bot || !message.content.startsWith(this.commandPrefix)) {
                 return;
             }

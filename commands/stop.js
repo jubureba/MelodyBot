@@ -1,22 +1,29 @@
+const { AudioPlayerStatus } = require('@discordjs/voice');
+const logger = require('../utils/loggerUtils');
+
 class StopCommand {
     constructor(bot) {
-      this.bot = bot;
-      this.name = 'stop';
-      this.description = 'Stop the music and clear the queue.';
+        this.bot = bot;
+        this.name = 'stop';
+        this.description = 'Stop the currently playing song and clear the queue.';
     }
-  
-    async execute(message, args) {
-      const { musicPlayer } = this.bot;
-      const queue = musicPlayer.player.getQueue(message.guild);
-  
-      if (queue) {
-        queue.destroy();
-        message.channel.send('Music stopped and queue cleared.');
-      } else {
-        message.channel.send('There is no music playing to stop.');
-      }
+
+    async execute(message) {
+        logger.info('Comando "stop" foi acionado.');
+
+        const guildId = message.guildId;
+        const audioPlayer = this.bot.audioPlayers.get(guildId);
+
+        if (audioPlayer && audioPlayer.state.status !== AudioPlayerStatus.Idle) {
+            audioPlayer.queue = [];
+            audioPlayer.stop();
+            message.channel.send('Stopped the playback and cleared the queue.');
+        } else {
+            message.channel.send('There is nothing to stop.');
+        }
+
+        logger.info('Comando "stop" concluído.');
     }
-  }
-  
-  module.exports = StopCommand;
-  
+}
+
+module.exports = StopCommand;

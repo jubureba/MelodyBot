@@ -40,40 +40,69 @@ class PlayCommand {
 
         const guildId = message.guildId;
         const voiceChannelId = message.member.voice.channelId;
-
-        const audioPlayer = createAudioPlayer();
-
+        
+        let audioPlayer = this.bot.audioPlayers.get(guildId);
+        
         try {
-            let args = message.content.split('play')[1]
+            let args = message.content.split('play')[1];
             let videoInfo = await playdl.search(args, {
                 limit: 1
             });
             let stream = await playdl.stream(videoInfo[0].url)
             let resource = createAudioResource(stream.stream, {
                 inputType: stream.type
-            })
-            audioPlayer.play(resource);
-            let existingConnection = getVoiceConnection(guildId, voiceChannelId);
+            });
+            
+            const messages = new MessagesUtils(message.channel);
+            if (!audioPlayer) {
+                // Se não houver um audioPlayer para este servidor, crie um novo
+                const newAudioPlayer = createAudioPlayer();
+                this.bot.audioPlayers.set(guildId, newAudioPlayer);
+                audioPlayer = newAudioPlayer; // Atribua o novo audioPlayer à variável audioPlayer
 
-            if (existingConnection) {
-                existingConnection.subscribe(audioPlayer);
+                // Inicialize a fila para o novo audioPlayer
+                audioPlayer.queue = [];
+
+                // Assine os eventos do novo audioPlayer
+                audioPlayer.on(AudioPlayerStatus.Idle, () => {
+                    logger.info('Áudio terminou de tocar.');
+
+                    // Verifique se há músicas na fila e inicie a próxima, se houver
+                    if (audioPlayer.queue.length > 0) {
+                        const nextResource = audioPlayer.queue.shift();
+                        audioPlayer.play(nextResource);
+                    }
+                });
+
+                audioPlayer.on('error', (error) => {
+                    logger.error('Erro ao reproduzir a música:', error);
+                });
+
+                audioPlayer.play(resource);
+                let existingConnection = getVoiceConnection(guildId, voiceChannelId);
+
+                if (existingConnection) {
+                    existingConnection.subscribe(audioPlayer);
+                } else {
+                    existingConnection = new createCustomAdapter(audioPlayer, voiceChannelId, guildId, message);
+                    existingConnection.connect();
+                }
+                messages.sendNowPlaying(videoInfo[0].title);
             } else {
-                existingConnection = new createCustomAdapter(audioPlayer, voiceChannelId, guildId, message);
-                existingConnection.connect();
+                // Se já houver um audioPlayer, adicione a música à fila e inicie a reprodução se o audioPlayer estiver ocioso
+                if (!audioPlayer.queue) {
+                    audioPlayer.queue = []; // Inicialize a fila se ainda não estiver definida
+                }
+                audioPlayer.queue.push(resource);
+                messages.sendQueueMessage(videoInfo[0].title);
+
+                if (audioPlayer.state.status === AudioPlayerStatus.Idle) {
+                    audioPlayer.play(resource);
+                }
             }
 
-
-            const messages = new MessagesUtils(message.channel);
             logger.info(`Bot conectado ao canal de voz: ${message.member.voice.channel.name}`);
-            messages.sendNowPlaying(videoInfo[0].title)
-
-            audioPlayer.on(AudioPlayerStatus.Idle, () => {
-                logger.info('Áudio terminou de tocar.');
-            });
-
-            audioPlayer.on('error', (error) => {
-                logger.error('Erro ao reproduzir a música:', error);
-            });
+           
 
             logger.info('Comando "play" concluído.');
         } catch (error) {
@@ -82,4 +111,5 @@ class PlayCommand {
         }
     }
 }
+
 module.exports = PlayCommand;

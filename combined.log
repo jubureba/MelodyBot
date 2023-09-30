@@ -154,3 +154,178 @@
 {"level":"info","message":"Usuário está em um canal de voz."}
 {"level":"info","message":"Comando \"play\" foi acionado."}
 {"level":"info","message":"Usuário está em um canal de voz."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"ajBNJ7P4T7I","level":"info","message":"Vídeo encontrado:","title":"L7NNON - Metflix Remix part. MC Poze do Rodo | Me Espera"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"_BfZRdFFdE8","level":"info","message":"Vídeo encontrado:","title":"MC Poze do Rodo - Metflix (prod. Ajaxx, Mello)"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"error","message":"Error ao executar o comando: Cannot read properties of undefined (reading 'state')","stack":"TypeError: Cannot read properties of undefined (reading 'state')\n    at SkipCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\skip.js:14:25)\n    at DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:58:39)\n    at DiscordBot.emit (node:events:517:28)\n    at MessageCreateAction.handle (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\actions\\MessageCreate.js:28:14)\n    at module.exports [as MESSAGE_CREATE] (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\handlers\\MESSAGE_CREATE.js:4:32)\n    at WebSocketManager.handlePacket (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:355:31)\n    at WebSocketManager.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:239:12)\n    at WebSocketManager.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)\n    at WebSocketShard.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@discordjs\\ws\\dist\\index.js:1173:51)\n    at WebSocketShard.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"ajBNJ7P4T7I","level":"info","message":"Vídeo encontrado:","title":"L7NNON - Metflix Remix part. MC Poze do Rodo | Me Espera"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Áudio terminou de tocar."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"ajBNJ7P4T7I","level":"info","message":"Vídeo encontrado:","title":"L7NNON - Metflix Remix part. MC Poze do Rodo | Me Espera"}
+{"level":"error","message":"Error ao executar o comando: this.bot.getAudioPlayerForGuild is not a function","stack":"TypeError: this.bot.getAudioPlayerForGuild is not a function\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:44:38)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:61:25)"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"_BfZRdFFdE8","level":"info","message":"Vídeo encontrado:","title":"MC Poze do Rodo - Metflix (prod. Ajaxx, Mello)"}
+{"level":"error","message":"Error ao executar o comando: this.bot.getAudioPlayerForGuild is not a function","stack":"TypeError: this.bot.getAudioPlayerForGuild is not a function\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:44:38)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:61:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"_BfZRdFFdE8","level":"info","message":"Vídeo encontrado:","title":"MC Poze do Rodo - Metflix (prod. Ajaxx, Mello)"}
+{"level":"error","message":"Error ao executar o comando: Cannot read properties of undefined (reading 'get')","stack":"TypeError: Cannot read properties of undefined (reading 'get')\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:45:47)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:61:25)"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"_BfZRdFFdE8","level":"info","message":"Vídeo encontrado:","title":"MC Poze do Rodo - Metflix (prod. Ajaxx, Mello)"}
+{"level":"error","message":"Erro ao buscar e reproduzir o áudio: audioPlayer is not defined","stack":"ReferenceError: audioPlayer is not defined\n    at PlayCommand.playTrack (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:101:9)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:61:22)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:60:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"_BfZRdFFdE8","level":"info","message":"Vídeo encontrado:","title":"MC Poze do Rodo - Metflix (prod. Ajaxx, Mello)"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"ajBNJ7P4T7I","level":"info","message":"Vídeo encontrado:","title":"L7NNON - Metflix Remix part. MC Poze do Rodo | Me Espera"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"queue\" foi acionado."}
+{"level":"error","message":"Error ao executar o comando: Cannot read properties of undefined (reading 'get')","stack":"TypeError: Cannot read properties of undefined (reading 'get')\n    at QueueCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\queue.js:19:51)\n    at DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:60:39)\n    at DiscordBot.emit (node:events:517:28)\n    at MessageCreateAction.handle (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\actions\\MessageCreate.js:28:14)\n    at module.exports [as MESSAGE_CREATE] (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\handlers\\MESSAGE_CREATE.js:4:32)\n    at WebSocketManager.handlePacket (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:355:31)\n    at WebSocketManager.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:239:12)\n    at WebSocketManager.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)\n    at WebSocketShard.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@discordjs\\ws\\dist\\index.js:1173:51)\n    at WebSocketShard.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"ajBNJ7P4T7I","level":"info","message":"Vídeo encontrado:","title":"L7NNON - Metflix Remix part. MC Poze do Rodo | Me Espera"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"j0lSpNtjPM8","level":"info","message":"Vídeo encontrado:","title":"Papa Roach - Last Resort (Squeaky Clean Version) (Official Music Video)"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"j0lSpNtjPM8","level":"info","message":"Vídeo encontrado:","title":"Papa Roach - Last Resort (Squeaky Clean Version) (Official Music Video)"}
+{"level":"error","message":"Error ao executar o comando: Cannot read properties of undefined (reading 'get')","stack":"TypeError: Cannot read properties of undefined (reading 'get')\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:42:51)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:60:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"j0lSpNtjPM8","level":"info","message":"Vídeo encontrado:","title":"Papa Roach - Last Resort (Squeaky Clean Version) (Official Music Video)"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"H2jCbXiEQI4","level":"info","message":"Vídeo encontrado:","title":"Papa Roach - Between Angels And Insects"}
+{"level":"error","message":"Erro ao buscar e reproduzir o áudio: Cannot read properties of undefined (reading 'push')","stack":"TypeError: Cannot read properties of undefined (reading 'push')\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:85:35)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Áudio terminou de tocar."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"H2jCbXiEQI4","level":"info","message":"Vídeo encontrado:","title":"Papa Roach - Between Angels And Insects"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"j0lSpNtjPM8","level":"info","message":"Vídeo encontrado:","title":"Papa Roach - Last Resort (Squeaky Clean Version) (Official Music Video)"}
+{"level":"error","message":"Erro ao buscar e reproduzir o áudio: Cannot read properties of undefined (reading 'push')","stack":"TypeError: Cannot read properties of undefined (reading 'push')\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:87:35)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"j0lSpNtjPM8","level":"info","message":"Vídeo encontrado:","title":"Papa Roach - Last Resort (Squeaky Clean Version) (Official Music Video)"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"H2jCbXiEQI4","level":"info","message":"Vídeo encontrado:","title":"Papa Roach - Between Angels And Insects"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Comando \"queue\" foi acionado."}
+{"level":"error","message":"Error ao executar o comando: Cannot read properties of null (reading 'title')","stack":"TypeError: Cannot read properties of null (reading 'title')\n    at C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\queue.js:27:55\n    at Array.map (<anonymous>)\n    at QueueCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\queue.js:26:45)\n    at DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:39)\n    at DiscordBot.emit (node:events:517:28)\n    at MessageCreateAction.handle (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\actions\\MessageCreate.js:28:14)\n    at module.exports [as MESSAGE_CREATE] (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\handlers\\MESSAGE_CREATE.js:4:32)\n    at WebSocketManager.handlePacket (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:355:31)\n    at WebSocketManager.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:239:12)\n    at WebSocketManager.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)"}
+{"level":"error","message":"Error ao executar o comando: Cannot read properties of undefined (reading 'state')","stack":"TypeError: Cannot read properties of undefined (reading 'state')\n    at SkipCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\skip.js:14:25)\n    at DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:39)\n    at DiscordBot.emit (node:events:517:28)\n    at MessageCreateAction.handle (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\actions\\MessageCreate.js:28:14)\n    at module.exports [as MESSAGE_CREATE] (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\handlers\\MESSAGE_CREATE.js:4:32)\n    at WebSocketManager.handlePacket (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:355:31)\n    at WebSocketManager.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:239:12)\n    at WebSocketManager.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)\n    at WebSocketShard.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@discordjs\\ws\\dist\\index.js:1173:51)\n    at WebSocketShard.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)"}
+{"level":"error","message":"Error ao executar o comando: Cannot read properties of undefined (reading 'state')","stack":"TypeError: Cannot read properties of undefined (reading 'state')\n    at StopCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\stop.js:15:25)\n    at DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:39)\n    at DiscordBot.emit (node:events:517:28)\n    at MessageCreateAction.handle (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\actions\\MessageCreate.js:28:14)\n    at module.exports [as MESSAGE_CREATE] (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\handlers\\MESSAGE_CREATE.js:4:32)\n    at WebSocketManager.handlePacket (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:355:31)\n    at WebSocketManager.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:239:12)\n    at WebSocketManager.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)\n    at WebSocketShard.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@discordjs\\ws\\dist\\index.js:1173:51)\n    at WebSocketShard.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"H2jCbXiEQI4","level":"info","message":"Vídeo encontrado:","title":"Papa Roach - Between Angels And Insects"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"j0lSpNtjPM8","level":"info","message":"Vídeo encontrado:","title":"Papa Roach - Last Resort (Squeaky Clean Version) (Official Music Video)"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Comando \"queue\" foi acionado."}
+{"level":"error","message":"Error ao executar o comando: Cannot read properties of null (reading 'title')","stack":"TypeError: Cannot read properties of null (reading 'title')\n    at C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\queue.js:18:105\n    at Array.map (<anonymous>)\n    at QueueCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\queue.js:18:45)\n    at DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:39)\n    at DiscordBot.emit (node:events:517:28)\n    at MessageCreateAction.handle (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\actions\\MessageCreate.js:28:14)\n    at module.exports [as MESSAGE_CREATE] (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\handlers\\MESSAGE_CREATE.js:4:32)\n    at WebSocketManager.handlePacket (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:355:31)\n    at WebSocketManager.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:239:12)\n    at WebSocketManager.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Áudio terminou de tocar."}
+{"level":"info","message":"Comando \"stop\" foi acionado."}
+{"level":"info","message":"Comando \"stop\" concluído."}
+{"level":"info","message":"Áudio terminou de tocar."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"j0lSpNtjPM8","level":"info","message":"Vídeo encontrado:","title":"Papa Roach - Last Resort (Squeaky Clean Version) (Official Music Video)"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"ajBNJ7P4T7I","level":"info","message":"Vídeo encontrado:","title":"L7NNON - Metflix Remix part. MC Poze do Rodo | Me Espera"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Comando \"queue\" foi acionado."}
+{"level":"info","message":"Comando \"queue\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Áudio terminou de tocar."}
+{"level":"info","message":"Áudio terminou de tocar."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"ajBNJ7P4T7I","level":"info","message":"Vídeo encontrado:","title":"L7NNON - Metflix Remix part. MC Poze do Rodo | Me Espera"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"error","message":"Erro ao buscar e reproduzir o áudio: Cannot read properties of undefined (reading 'queue')","stack":"TypeError: Cannot read properties of undefined (reading 'queue')\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:104:29)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"HPM7OWuchFs","level":"info","message":"Vídeo encontrado:","title":"HALLS NA LÍNGUA - Kadu Martins (CLIPE OFICIAL)"}
+{"level":"error","message":"Erro ao buscar e reproduzir o áudio: Cannot access 'messages' before initialization","stack":"ReferenceError: Cannot access 'messages' before initialization\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:93:21)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"ajBNJ7P4T7I","level":"info","message":"Vídeo encontrado:","title":"L7NNON - Metflix Remix part. MC Poze do Rodo | Me Espera"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"error","message":"Erro ao buscar e reproduzir o áudio: Cannot read properties of undefined (reading 'queue')","stack":"TypeError: Cannot read properties of undefined (reading 'queue')\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:105:29)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"HPM7OWuchFs","level":"info","message":"Vídeo encontrado:","title":"HALLS NA LÍNGUA - Kadu Martins (CLIPE OFICIAL)"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"ajBNJ7P4T7I","level":"info","message":"Vídeo encontrado:","title":"L7NNON - Metflix Remix part. MC Poze do Rodo | Me Espera"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"HPM7OWuchFs","level":"info","message":"Vídeo encontrado:","title":"HALLS NA LÍNGUA - Kadu Martins (CLIPE OFICIAL)"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
+{"level":"info","message":"Comando \"play\" foi acionado."}
+{"level":"info","message":"Usuário está em um canal de voz."}
+{"id":"ajBNJ7P4T7I","level":"info","message":"Vídeo encontrado:","title":"L7NNON - Metflix Remix part. MC Poze do Rodo | Me Espera"}
+{"level":"info","message":"Bot conectado ao canal de voz: 🍌 Banana Café"}
+{"level":"info","message":"Comando \"play\" concluído."}
