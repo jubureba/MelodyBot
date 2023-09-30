@@ -100,22 +100,23 @@ class PlayCommand {
     }
 
     handleIdleState(guildId, audioPlayer) {
+        console.log('to aqui');
         const messages = this.messages.get(guildId);
-        messages.removeCurrentSongFromQueue();
-
+        messages.removeSongFromQueue();
+        messages.resetQueue();
+        
         if (audioPlayer.queue.length > 0) {
             const nextResource = audioPlayer.queue.shift();
             const nextSongInfo = this.musicQueue.get(guildId)[0];
-
+            
             if (nextSongInfo) {
+                console.log('to aqui2');
                 audioPlayer.play(nextResource);
                 messages.setNowPlayingInfo(nextSongInfo.videoInfo);
                 messages.updateMessage(nextSongInfo.videoInfo);
             } else {
-                // A fila de reprodução está vazia, você pode lidar com isso aqui
             }
         } else {
-            // A fila de reprodução está vazia, você pode lidar com isso aqui
         }
     }
 }

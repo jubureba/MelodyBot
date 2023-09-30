@@ -11,15 +11,28 @@ class MessagesUtils {
     }
 
     async sendInitialMessage(songInfo) {
-        this.playCount = 1;
         this.queue.push(songInfo);
+        this.playCount = this.queue.length;
+        console.log(this.playCount);
         this.nowPlayingInfo = songInfo;
         const embed = this.createEmbed();
         this.message = await this.textChannel.send({ embeds: [embed] });
         await this.addReactions();
     }
 
-    async updateQueue() {
+    async updateQueue(newSongInfo) {
+        if (!newSongInfo) {
+            console.error('Tentativa de atualizar a fila com informações de música nulas.');
+            return;
+        }
+    
+        const isNewSong = this.queue.length === 0 || !this.queue.some(info => info.title === newSongInfo.title);
+    
+        if (isNewSong) {
+            // Se a fila estiver vazia ou a nova música não estiver na fila, adicione uma nova linha
+            this.queue.push(newSongInfo);
+        }
+    
         const embed = this.createEmbed();
         try {
             await this.message.edit({ embeds: [embed] });
@@ -27,14 +40,19 @@ class MessagesUtils {
             console.error('Erro ao editar a mensagem:', error);
         }
     }
+    
 
     async updateMessage(newSongInfo) {
-        this.playCount++;
         this.queue.push(newSongInfo);
+        this.updateQueue(newSongInfo);
+    }
+
+    resetQueue() {
+        this.queue = this.queue.slice(1); // Remove a música que está tocando atualmente
         this.updateQueue();
     }
 
-    async removeSongFromQueue(songTitle) {
+    async removeSongFromQueue() {
         if (this.queue.length > 0) {
             this.queue.shift(); // Remove a música que está tocando atualmente
             this.updateQueue();
@@ -64,7 +82,7 @@ class MessagesUtils {
         const embed = {
             color: 0xFF0000,
             title: this.nowPlayingInfo
-                ? `Tocando agora: ☝️ (Fila: ${this.playCount})`
+                ? `Tocando agora: ☝️ (Fila: ${this.queue.length})`
                 : 'Aguardando início...',
             author: this.nowPlayingInfo
                 ? {
@@ -84,7 +102,9 @@ class MessagesUtils {
                 },
                 {
                     name: 'Fila',
-                    value: this.queue.length > 0 ? this.queue.join('\n') : 'Fila vazia',
+                    value: this.queue.length > 0
+                        ? this.queue.map(info => info.title).join('\n')
+                        : 'Fila vazia',
                 },
             ],
             footer: {
@@ -96,11 +116,9 @@ class MessagesUtils {
         return embed;
     }
     
-    
-
-    async removeCurrentSongFromQueue() {
+    async removeSongFromQueue() {
         if (this.queue.length > 0) {
-            this.queue.shift();
+            this.queue.shift(); // Remove a música que está tocando atualmente
             await this.updateQueue();
         }
     }
@@ -123,9 +141,6 @@ class MessagesUtils {
             return null;
         }
     }
-
-    
-    
 
     clearMessage() {
         if (this.message) {
