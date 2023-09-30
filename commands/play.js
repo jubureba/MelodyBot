@@ -1,10 +1,9 @@
 const { createAudioPlayer, createAudioResource, getVoiceConnection, AudioPlayerStatus } = require('@discordjs/voice');
 const YouTubeAPI = require('../modules/YouTubeAPI');
 const createCustomAdapter = require('./createCustomAdapter');
-const ytdl = require('ytdl-core-discord');
+const playdl = require('play-dl');
 const logger = require('../utils/loggerUtils');
-const play = require('play-dl'); // Everything
-
+const MessagesUtils = require('../utils/messagesUtils');
 
 class PlayCommand {
     constructor(bot) {
@@ -17,86 +16,70 @@ class PlayCommand {
     }
 
     async execute(message, args) {
-        logger.info('Comando "play" foi acionado.'); 
+        logger.info('Comando "play" foi acionado.');
         const query = args.join(' ');
         if (!query) {
             message.channel.send('Please provide a search query.');
             return;
         }
-    
+
         if (!message.member.voice.channelId) {
             message.channel.send('You must be in a voice channel to use this command.');
             return;
         }
-    
+
         logger.info('Usuário está em um canal de voz.');
-    
+
         const video = await this.youtubeAPI.searchVideo(query);
         if (!video) {
             message.channel.send('Could not find the requested video on YouTube.');
             return;
         }
-    
+
         logger.info('Vídeo encontrado:', video);
-    
+
         const guildId = message.guildId;
         const voiceChannelId = message.member.voice.channelId;
-    
+
         const audioPlayer = createAudioPlayer();
-        const url = `https://www.youtube.com/watch?v=${video.id}`;
-        const audioStream = await ytdl(url, { filter: 'audioonly' });
 
-        let resource;
+        try {
+            let args = message.content.split('play')[1]
+            let videoInfo = await playdl.search(args, {
+                limit: 1
+            });
+            let stream = await playdl.stream(videoInfo[0].url)
+            let resource = createAudioResource(stream.stream, {
+                inputType: stream.type
+            })
+            audioPlayer.play(resource);
+            let existingConnection = getVoiceConnection(guildId, voiceChannelId);
 
-        resource = createAudioResource(audioStream, {
-	        inlineVolume: true,
-        });
-        resource.volume.setVolume(0.5)
-    
-        audioPlayer.play(resource);
-
-        let existingConnection = getVoiceConnection(guildId, voiceChannelId);
-        
-        if (existingConnection) {
-            existingConnection.subscribe(audioPlayer);
-        } else {
-            existingConnection = new createCustomAdapter(audioPlayer, voiceChannelId, guildId, message);
-            existingConnection.connect();
-        }
-        
-        logger.info(`Bot conectado ao canal de voz: ${message.member.voice.channel.name}`);
-        
-        audioPlayer.on(AudioPlayerStatus.Idle, () => {
-            logger.info('Áudio terminou de tocar.');
-        });
-
-        audioPlayer.on('error', async (error) => {
-            logger.error('Erro ao reproduzir a música:', error);
-        
-            if (error.message === 'aborted') {
-                // Tente reconectar e retomar a reprodução
-                const guildId = message.guildId;
-                const voiceChannelId = message.member.voice.channelId;
-        
-                try {
-                    const existingConnection = getVoiceConnection(guildId, voiceChannelId);
-                    if (existingConnection) {
-                        existingConnection.subscribe(audioPlayer);
-                    } else {
-                        const newConnection = new createCustomAdapter(audioPlayer, voiceChannelId, guildId, message);
-                        newConnection.connect();
-                    }
-        
-                    logger.info('Reconexão bem-sucedida.');
-                } catch (reconnectError) {
-                    logger.error('Erro ao tentar reconectar:', reconnectError);
-                }
+            if (existingConnection) {
+                existingConnection.subscribe(audioPlayer);
+            } else {
+                existingConnection = new createCustomAdapter(audioPlayer, voiceChannelId, guildId, message);
+                existingConnection.connect();
             }
-        });
-        
 
-        logger.info('Comando "play" concluído.');
+
+            const messages = new MessagesUtils(message.channel);
+            logger.info(`Bot conectado ao canal de voz: ${message.member.voice.channel.name}`);
+            messages.sendNowPlaying(videoInfo[0].title)
+
+            audioPlayer.on(AudioPlayerStatus.Idle, () => {
+                logger.info('Áudio terminou de tocar.');
+            });
+
+            audioPlayer.on('error', (error) => {
+                logger.error('Erro ao reproduzir a música:', error);
+            });
+
+            logger.info('Comando "play" concluído.');
+        } catch (error) {
+            logger.error('Erro ao buscar e reproduzir o áudio:', error);
+            message.channel.send('An error occurred while fetching and playing the audio.');
+        }
     }
 }
-
 module.exports = PlayCommand;

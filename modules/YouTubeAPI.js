@@ -1,28 +1,18 @@
-const ytdl = require('ytdl-core');
 const axios = require('axios');
 const config = require('../config');
+const play = require('play-dl'); // Importe play-dl
 
 class YouTubeAPI {
   async searchVideo(query) {
     try {
-      const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
-        params: {
-          q: query,
-          key: config.youtubeAPIKey,
-          type: 'video',
-          part: 'snippet',
-          maxResults: 1,
-        },
-      });
-
-      const video = response.data.items[0];
-      if (video) {
+      const videoData = await play.search(query, { limit: 1 });
+      if (videoData[0]) {
+        const video = videoData[0];
         return {
-          id: video.id.videoId,
-          title: video.snippet.title,
+          id: video.id,
+          title: video.title,
         };
       }
-      
     } catch (error) {
       console.error('Error searching for YouTube video:', error);
     }
@@ -51,8 +41,13 @@ class YouTubeAPI {
   }
 
   async getTrackStreamURL(videoId) {
-    return ytdl(`https://www.youtube.com/watch?v=${videoId}`);
+    try {
+      return `https://www.youtube.com/watch?v=${videoId}`;
+    } catch (error) {
+      console.error('Error getting YouTube video stream URL:', error);
+    }
   }
+  
 }
 
 module.exports = YouTubeAPI;
