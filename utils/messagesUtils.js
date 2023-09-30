@@ -1,148 +1,152 @@
+const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
+const ytdl = require('ytdl-core');
+
 class MessagesUtils {
     constructor(textChannel) {
         this.textChannel = textChannel;
+        this.message = null;
+        this.playCount = 0;
+        this.queue = [];
+        this.nowPlayingInfo = null;
     }
 
-    async sendMessage(message) {
-        return this.textChannel.send(message);
+    async sendInitialMessage(songInfo) {
+        this.playCount = 1;
+        this.queue.push(songInfo.title);
+        this.nowPlayingInfo = songInfo;
+        const embed = this.createEmbed();
+        this.message = await this.textChannel.send({ embeds: [embed] });
+        await this.addReactions();
     }
 
-    async sendNowPlaying(songInfo) {
+    async updateQueue() {
+        const embed = this.createEmbed();
+        try {
+            await this.message.edit({ embeds: [embed] });
+        } catch (error) {
+            console.error('Erro ao editar a mensagem:', error);
+        }
+    }
+
+    async updateMessage(newSongInfo) {
+        this.playCount++;
+        this.queue.push(newSongInfo.title);
+        this.updateQueue();
+    }
+
+    async removeSongFromQueue(songTitle) {
+        if (this.queue.length > 0) {
+            this.queue.shift(); // Remove a música que está tocando atualmente
+            this.updateQueue();
+        }
+    }
+
+    async addReactions() {
+        if (this.message) {
+            await this.message.react('⏮️');
+            await this.message.react('⏸️');
+            await this.message.react('⏭️');
+            await this.message.react('🔊');
+            await this.message.react('🔉');
+            await this.message.react('⏹️');
+        }
+    }
+
+    setNowPlayingInfo(songInfo) {
+        this.nowPlayingInfo = songInfo;
+    }
+
+    clearNowPlayingInfo() {
+        this.nowPlayingInfo = null;
+    }
+
+    createEmbed() {
         const embed = {
             color: 0xFF0000,
-            title: 'Now Playing',
-            author: {
-                name: songInfo[0].title,
-                icon_url: songInfo[0].thumbnails[0].url // URL da thumbnail
-            },
-            description: `By ${songInfo[0].channel.name}`,
+            title: this.nowPlayingInfo
+                ? `Tocando agora: ☝️ (Fila: ${this.playCount})`
+                : 'Aguardando início...',
+            author: this.nowPlayingInfo
+                ? {
+                      name: this.nowPlayingInfo.title,
+                      icon_url: this.nowPlayingInfo.thumbnails[0].url,
+                  }
+                : {},
+            description: this.nowPlayingInfo
+                ? `Autor ${this.nowPlayingInfo.channel.name}`
+                : '',
             fields: [
                 {
-                    name: 'Duration',
-                    value: songInfo[0].durationRaw
-                }
-            ],
-            footer: {
-                text: 'Your Bot Name',
-                icon_url: null // URL do ícone do seu bot
-            }
-        };
-
-        const reactions = ['⏮️', '⏸️', '⏭️', '🔊', '🔉', '⏹️']; // Adicione as reações desejadas aqui
-
-        const message = await this.sendEmbedWithReactions(embed, reactions);
-        this.setupReactionListener(message, reactions);
-    }
-
-    sendSkipMessage() {
-        this.sendMessage('Música Skipada.');
-    }
-
-    sendStopMessage() {
-        this.sendMessage('Parei de Tocar.');
-    }
-
-    async sendQueueMessage(songInfo) {
-        const embed = {
-            color: 0x3498db,
-            title: 'Added to Queue',
-            author: {
-                name: songInfo[0].title,
-                icon_url: songInfo[0].thumbnails[0].url // URL da thumbnail
-            },
-            description: `By ${songInfo[0].channel.name}`,
-            fields: [
+                    name: 'Duração',
+                    value: this.nowPlayingInfo ? this.nowPlayingInfo.durationRaw : '',
+                },
                 {
-                    name: 'Duration',
-                    value: songInfo[0].durationRaw
-                }
+                    name: 'Fila',
+                    value: this.queue.length > 0 ? this.queue.join('\n') : 'Fila vazia',
+                },
             ],
             footer: {
-                text: 'Your Bot Name',
-                icon_url: null // URL do ícone do seu bot
-            }
+                text: 'MelodyBot by Anderson.Lima',
+                icon_url: 'https://i.ibb.co/Hg7tpbS/logo.png',
+            },
         };
 
-        const reactions = ['⏮️', '⏸️', '⏭️', '🔊', '🔉', '⏹️']; // Adicione as reações desejadas aqui
-
-        const message = await this.sendEmbedWithReactions(embed, reactions);
-        this.setupReactionListener(message, reactions);
+        return embed;
     }
 
-    async sendEmbedWithReactions(embed, reactions) {
-        const message = await this.sendMessage({ embeds: [embed] });
-
-        for (const reaction of reactions) {
-            await message.react(reaction);
-        }
-
-        return message;
-    }
-
-    setupReactionListener(message, reactions) {
-        const reactionFilter = (reaction, user) => reactions.includes(reaction.emoji.name);
-        const collector = message.createReactionCollector({ filter: reactionFilter, time: 60000 });
-
-        collector.on('collect', (reaction, user) => {
-            const action = reaction.emoji.name;
-
-            if (action) {
-                this.executeAction(action);
-            }
-        });
-
-        collector.on('end', (collected, reason) => {
-            // Lida com o fim do coletor de reações, se necessário
-        });
-    }
-
-    executeAction(action) {
-        switch (action) {
-            case '⏮️':
-                this.backAction();
-                break;
-            case '⏸️':
-                this.pauseAction();
-                break;
-            case '⏭️':
-                this.skipAction();
-                break;
-            case '🔊':
-                this.volumeUpAction();
-                break;
-            case '🔉':
-                this.volumeDownAction();
-                break;
-            case '⏹️':
-                this.stopAction();
-                break;
-            default:
-                break;
+    async removeCurrentSongFromQueue() {
+        if (this.queue.length > 0) {
+            // Remove a música que acabou de tocar da fila
+            this.queue.shift();
+    
+            // Atualize a mensagem da fila para refletir as mudanças
+            await this.updateQueue();
         }
     }
 
-    backAction() {
-        // Implemente a lógica para voltar a música
+    async getSongInfo(resource) {
+        try {
+            const stream = await ytdl.getBasicInfo(resource.url);
+            
+            return {
+                title: stream.videoDetails.title,
+                channel: {
+                    name: stream.videoDetails.author.name,
+                },
+                durationRaw: stream.videoDetails.lengthSeconds,
+                // Adicione outras informações que você deseja extrair
+                // da música, como URL da imagem da capa, etc.
+            };
+        } catch (error) {
+            console.error('Erro ao obter informações da música:', error);
+            return null;
+        }
     }
 
-    pauseAction() {
-        // Implemente a lógica para pausar a música
+    async getSongInfoForNextSong() {
+        if (!this.nowPlayingInfo) {
+            return null; // Retorna null se não houver informações da próxima música
+        }
+    
+        console.log('play info', this.nowPlayingInfo);
+        return {
+            title: this.nowPlayingInfo.title,
+            channel: {
+                name: this.nowPlayingInfo.channel.name,
+            },
+            durationRaw: this.nowPlayingInfo.durationRaw,
+            // Adicione outras informações que você deseja extrair
+            // da música, como URL da imagem da capa, etc.
+        };
     }
 
-    skipAction() {
-        // Implemente a lógica para skipar a música
-    }
-
-    volumeUpAction() {
-        // Implemente a lógica para aumentar o volume
-    }
-
-    volumeDownAction() {
-        // Implemente a lógica para diminuir o volume
-    }
-
-    stopAction() {
-        // Implemente a lógica para parar de tocar e sair do canal de voz
+    clearMessage() {
+        if (this.message) {
+            this.message.delete();
+            this.message = null;
+            this.playCount = 0;
+            this.queue = [];
+        }
     }
 }
 
