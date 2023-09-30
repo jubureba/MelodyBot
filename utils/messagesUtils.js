@@ -1,16 +1,6 @@
-const { AudioPlayerStatus } = require('@discordjs/voice');
-const { playEmoji, pauseEmoji, skipEmoji, volumeUpEmoji, volumeDownEmoji, stopEmoji } = require('../utils/emojisUtils');
-const MusicControl = require('../modules/MusicControl');
-
-
 class MessagesUtils {
-    //construtor somente pra enviar as msg
-    constructor(textChannel, options = {}) {
+    constructor(textChannel) {
         this.textChannel = textChannel;
-        this.audioPlayer = options.audioPlayer || null;
-        this.musicQueue = options.musicQueue || [];
-        this.currentSongIndex = options.currentSongIndex || 0;
-        this.voiceConnection = options.voiceConnection || null;
     }
 
     async sendMessage(message) {
@@ -19,7 +9,7 @@ class MessagesUtils {
 
     async sendNowPlaying(songInfo) {
         const embed = {
-            color: 0x0099ff,
+            color: 0xFF0000,
             title: 'Now Playing',
             author: {
                 name: songInfo[0].title,
@@ -54,8 +44,8 @@ class MessagesUtils {
 
     async sendQueueMessage(songInfo) {
         const embed = {
-            color: 0x0099ff,
-            title: 'Now Playing',
+            color: 0x3498db,
+            title: 'Added to Queue',
             author: {
                 name: songInfo[0].title,
                 icon_url: songInfo[0].thumbnails[0].url // URL da thumbnail
@@ -73,17 +63,9 @@ class MessagesUtils {
             }
         };
 
-        const playPauseEmoji = this.musicControl.isPlaying ? pauseEmoji : playEmoji;
+        const reactions = ['⏮️', '⏸️', '⏭️', '🔊', '🔉', '⏹️']; // Adicione as reações desejadas aqui
 
-        const message = await this.sendEmbedWithReactions(embed, [
-            { emoji: '⏮️', action: 'back' },
-            { emoji: playPauseEmoji, action: 'playPause' }, // Botão de pausa/reprodução
-            { emoji: skipEmoji, action: 'skip' },
-            { emoji: volumeUpEmoji, action: 'volumeUp' },
-            { emoji: volumeDownEmoji, action: 'volumeDown' },
-            { emoji: stopEmoji, action: 'stop' },
-        ]);
-
+        const message = await this.sendEmbedWithReactions(embed, reactions);
         this.setupReactionListener(message, reactions);
     }
 
@@ -140,43 +122,12 @@ class MessagesUtils {
     }
 
     backAction() {
-        // Lógica para voltar a música
-        // Verifique se há uma fila de reprodução e se a música atual não é a primeira da fila
-    
-        if (this.musicQueue.length > 0 && this.currentSongIndex > 0) {
-            // Decrementar o índice da música atual
-            this.currentSongIndex--;
-    
-            // Obter a música anterior da fila
-            const previousSong = this.musicQueue[this.currentSongIndex];
-    
-            // Toque a música anterior
-            this.playMusic(previousSong);
-        } else {
-            // Caso contrário, não há uma música anterior para tocar
-            this.sendMessage('Não há uma música anterior na fila.');
-        }
+        // Implemente a lógica para voltar a música
     }
-    
 
     pauseAction() {
-        // Verifique se o bot está em um canal de voz
-        if (!this.voiceConnection) {
-            this.sendMessage('Não estou em um canal de voz.');
-            return;
-        }
-    
-        // Verifique se já está pausado
-        if (this.audioPlayer.state.status === AudioPlayerStatus.Paused) {
-            this.sendMessage('A música já está pausada.');
-            return;
-        }
-    
-        // Pausar a música
-        this.audioPlayer.pause();
-        this.sendMessage('Música pausada.');
+        // Implemente a lógica para pausar a música
     }
-    
 
     skipAction() {
         // Implemente a lógica para skipar a música
