@@ -58,12 +58,10 @@ class PlayCommand {
                 // Se não houver um audioPlayer para este servidor, crie um novo
                 const newAudioPlayer = createAudioPlayer();
                 this.bot.audioPlayers.set(guildId, newAudioPlayer);
-                audioPlayer = newAudioPlayer; // Atribua o novo audioPlayer à variável audioPlayer
+                audioPlayer = newAudioPlayer;
 
-                // Inicialize a fila para o novo audioPlayer
                 audioPlayer.queue = [];
 
-                // Assine os eventos do novo audioPlayer
                 audioPlayer.on(AudioPlayerStatus.Idle, () => {
                     logger.info('Áudio terminou de tocar.');
 
@@ -87,14 +85,14 @@ class PlayCommand {
                     existingConnection = new createCustomAdapter(audioPlayer, voiceChannelId, guildId, message);
                     existingConnection.connect();
                 }
-                messages.sendNowPlaying(videoInfo[0].title);
+
+                messages.sendNowPlaying(videoInfo);
             } else {
-                // Se já houver um audioPlayer, adicione a música à fila e inicie a reprodução se o audioPlayer estiver ocioso
                 if (!audioPlayer.queue) {
-                    audioPlayer.queue = []; // Inicialize a fila se ainda não estiver definida
+                    audioPlayer.queue = []; 
                 }
                 audioPlayer.queue.push(resource);
-                messages.sendQueueMessage(videoInfo[0].title);
+                messages.sendQueueMessage(videoInfo);
 
                 if (audioPlayer.state.status === AudioPlayerStatus.Idle) {
                     audioPlayer.play(resource);
