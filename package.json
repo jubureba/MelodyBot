@@ -5,6 +5,9 @@
   "repository": "https://github.com/ZerioDev/Music-bot.git",
   "author": "ZerioDev",
   "license": "MIT",
+  "engines": {
+    "node": "14.x"
+  },
   "dependencies": {
     "@discordjs/voice": "^0.16.0",
     "axios": "^1.5.1",
