@@ -6,13 +6,11 @@ class QueueManager {
         this.isPlaying = false;
     }
 
-    addToQueue(guildId, videoInfo, resource) {
+    addToQueue(guildId, videoInfo, resource, addedBy) {
         if (!this.queues.has(guildId)) {
             this.queues.set(guildId, []);
         }
-        this.queues.get(guildId).push({ videoInfo, resource });
-
-        console.log('fila', this.queues);
+        this.queues.get(guildId).push({ videoInfo, resource, addedBy });
     }
 
     removeFromQueue(guildId, index) {

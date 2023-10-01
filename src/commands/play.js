@@ -1,14 +1,15 @@
 const { createAudioPlayer, createAudioResource, getVoiceConnection, AudioPlayerStatus } = require('@discordjs/voice');
-const logger = require('../utils/loggerUtils');
 const createCustomAdapter = require('./createCustomAdapter');
 const MessagesUtils = require('../utils/messagesUtils');
-const QueueManager = require('../modules/QueueManager'); // Substitua pelo caminho correto do arquivo QueueManager.js
+const QueueManager = require('../modules/QueueManager');
 const YouTubeAPI = require('../modules/YouTubeAPI');
+const { logger, handleException } = require('../utils/loggerUtils');
 
 class PlayCommand {
   constructor(bot) {
     this.bot = bot;
     this.name = 'play';
+    this.aliases = ['p'];
     this.description = 'Play a song from YouTube';
     this.youtubeAPI = new YouTubeAPI();
     this.queueManager = new QueueManager();
@@ -18,9 +19,7 @@ class PlayCommand {
   async execute(message, args) {
     try {
       const query = args.join(' ');
-      console.log('Execute command: !play', query);
   
-      // Verifica se o autor da mensagem é o próprio bot
       if (message.author.bot) {
         return;
       }
@@ -42,24 +41,22 @@ class PlayCommand {
   
       if (!videoInfo || !videoInfo.url) {
         message.channel.send('Não encontrei nada.');
-        logger.error(videoInfo);
+        handleException(videoInfo);
         return;
       }
   
       const streamInfo = await this.youtubeAPI.stream(videoInfo.url);
       const resource = createAudioResource(streamInfo.stream, { inputType: streamInfo.type });
   
-      const messages = this.getOrCreateMessagesInstance(guildId, message.channel);
+      const messages = this.getOrCreateMessagesInstance(guildId, message);
   
       let audioPlayer = this.bot.audioPlayers.get(guildId);
       if (!audioPlayer) {
         audioPlayer = this.createAudioPlayerAndConnect(guildId, resource, voiceChannelId, message);
         await messages.sendInitialMessage(videoInfo, resource);
       } else {
-        
           audioPlayer.queue.push(resource);
           await messages.updateMessage(videoInfo, resource);
-        
       }
   
       if (!this.queueManager.getIsPlaying(guildId)) {
@@ -67,18 +64,18 @@ class PlayCommand {
         this.queueManager.setIsPlaying(guildId, true);
       }
     } catch (error) {
-      logger.error('An error occurred:', error);
+      handleException(error);
       message.channel.send('Um erro aconteceu.');
     }
   }
 
-  getOrCreateMessagesInstance(guildId, textChannel) {
+  getOrCreateMessagesInstance(guildId, message) {
     if (!this.messages.has(guildId)) {
-      if (!textChannel) {
+      if (!message) {
         console.error('Text channel is undefined.');
         return null;
       }
-      this.messages.set(guildId, new MessagesUtils(textChannel, this.queueManager));
+      this.messages.set(guildId, new MessagesUtils(message, this.queueManager));
       console.log('Created MessagesUtils instance.');
     }
     return this.messages.get(guildId);
@@ -101,7 +98,7 @@ class PlayCommand {
       this.handleIdleState(guildId, newAudioPlayer, resource);
     });
     newAudioPlayer.on('error', (error) => {
-      logger.error('Error playing the song:', error);
+      handleException(error);
     });
 
     return newAudioPlayer;
