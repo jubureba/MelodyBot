@@ -6,6 +6,8 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
+log
+*.log
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -73,8 +75,7 @@ now.json
 # Output of 'npm pack'
 *.tgz
 
-# LOG
-*.log
+
 
 # Yarn Integrity file
 .yarn-integrity

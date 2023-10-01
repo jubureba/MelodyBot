@@ -1,6 +1,6 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const config = require('../config');
-const CommandManager = require('../CommandManager');
+const CommandManager = require('../commands/CommandManager');
 const PlayCommand = require('../commands/play');
 const SkipCommand = require('../commands/skip');
 const StopCommand = require('../commands/stop');
