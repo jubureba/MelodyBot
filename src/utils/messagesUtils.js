@@ -1,10 +1,11 @@
-const QueueManager = require('../modules/QueueManager');
 const { Embed } = require('discord.js');
 const ytdl = require('ytdl-core');
+const { logger, handleException } = require('../utils/loggerUtils');
 
 class MessagesUtils {
-  constructor(textChannel, queueManager) {
-    this.textChannel = textChannel;
+  constructor(message, queueManager) {
+    this.textChannel = message.channel;
+    this.message = message;
     this.message = null;
     this.queueManager = queueManager;
     this.nowPlayingInfo = null;
@@ -32,7 +33,8 @@ class MessagesUtils {
   
     if (isNewSong) {
       // Se a fila estiver vazia ou a nova música não estiver na fila, adicione uma nova linha
-      this.queueManager.addToQueue(this.textChannel.guildId, newSongInfo, resource);
+      console.log(this.message.author.username);
+      this.queueManager.addToQueue(this.textChannel.guildId, newSongInfo, resource, this.message.author.username);
     }
   
     const embed = this.createEmbed();
@@ -40,7 +42,7 @@ class MessagesUtils {
     try {
       await this.message.edit({ embeds: [embed] });
     } catch (error) {
-      console.error('Erro ao editar a mensagem:', error);
+      handleException(error);
     }
     this.nowPlayingInfo = newSongInfo;
   
@@ -52,10 +54,8 @@ class MessagesUtils {
       }
     });
   }
-  
-
   async removeSongFromQueue() {
-    this.queueManager.removeFromQueue(this.textChannel.guildId, 0);
+    await this.queueManager.removeFromQueue(this.textChannel.guildId, 0);
   }
 
   async addReactions() {
@@ -78,39 +78,35 @@ class MessagesUtils {
   }
 
   createEmbed() {
-    console.log(this.queueManager.getQueue(this.textChannel.guildId));
+    const queueInfo = this.queueManager.getQueue(this.textChannel.guildId);
+  
     const embed = {
       color: 0xFF0000,
-      title: this.nowPlayingInfo
-        ? `**Tocando Agora**`
-        : 'Aguardando Início...',
+      title: queueInfo.length > 0 ? `**Tocando Agora**` : 'Aguardando Início...',
       author: {
-        name: this.nowPlayingInfo
-          ? this.nowPlayingInfo.title || 'Título Desconhecido'
-          : 'MelodyBot',
-        icon_url: this.nowPlayingInfo && this.nowPlayingInfo.thumbnails && this.nowPlayingInfo.thumbnails.length > 0
-          ? this.nowPlayingInfo.thumbnails[0].url
+        name: queueInfo.length > 0 ? queueInfo.values().next().value.videoInfo.title || 'Título Desconhecido' : 'MelodyBot',
+        icon_url: queueInfo.length > 0 && queueInfo.values().next().value.videoInfo.thumbnails && queueInfo.values().next().value.videoInfo.thumbnails.length > 0
+          ? queueInfo.values().next().value.videoInfo.thumbnails[0].url
           : 'https://i.ibb.co/Hg7tpbS/logo.png',
       },
-      description: this.nowPlayingInfo
-        ? `**Autor:** ${this.nowPlayingInfo.channel ? this.nowPlayingInfo.channel.name || 'Desconhecido' : 'Desconhecido'}`
+      description: queueInfo.length > 0
+        ? `**Autor:** ${queueInfo.values().next().value.videoInfo.channel ? queueInfo.values().next().value.videoInfo.channel.name || 'Desconhecido' : 'Desconhecido'}`
         : '',
       fields: [
         {
           name: 'Duração',
-          value: this.nowPlayingInfo
-            ? this.formatDuration(this.nowPlayingInfo.durationRaw) || 'Desconhecida'
+          value: queueInfo.length > 0
+            ? this.formatDuration(queueInfo.values().next().value.videoInfo.durationRaw) || 'Desconhecida'
             : 'Desconhecida',
         },
         {
           name: 'Fila',
-          value: this.queueManager.getQueue(this.textChannel.guildId).length > 0
-            ? this.queueManager.getQueue(this.textChannel.guildId).map((info, index) => {
-              if (info.resource) {
-                return `**${index + 1}.** ${info.videoInfo.title}`;
-              } else {
-                return `**${index + 1}.** Música sem recurso disponível`;
-              }
+          value: queueInfo.length > 1
+            ? [...queueInfo.values()].slice(1).map((info, index) => {
+              const title = info.videoInfo ? info.videoInfo.title || 'Título Desconhecido' : 'Título Desconhecido';
+              const author = info.videoInfo && info.videoInfo.channel ? info.videoInfo.channel.name || 'Desconhecido' : 'Desconhecido';
+              const duration = info.videoInfo ? this.formatDuration(info.videoInfo.durationRaw) || 'Desconhecida' : 'Desconhecida';
+              return `**${index + 1}.** ${title}` ; //(Adicionado por: ${info.addedBy})
             }).join('\n')
             : 'Fila Vazia',
         },
@@ -120,7 +116,7 @@ class MessagesUtils {
         icon_url: 'https://i.ibb.co/Hg7tpbS/logo.png',
       },
     };
-
+  
     return new Embed(embed);
   }
 
