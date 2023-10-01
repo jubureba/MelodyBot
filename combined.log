@@ -1577,3 +1577,224 @@
 {"level":"info","message":"Comando \"skip\" foi acionado."}
 {"level":"info","message":"Comando \"skip\" concluído."}
 {"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: Cannot read properties of undefined (reading 'has')","stack":"TypeError: Cannot read properties of undefined (reading 'has')\n    at PlayCommand.getOrCreateMessagesInstance (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:69:28)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:39:35)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: Cannot read properties of undefined (reading 'has')","stack":"TypeError: Cannot read properties of undefined (reading 'has')\n    at PlayCommand.getOrCreateMessagesInstance (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:69:28)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:39:35)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: MessageEmbed is not a constructor","stack":"TypeError: MessageEmbed is not a constructor\n    at MessagesUtils.createEmbed (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:118:16)\n    at MessagesUtils.sendInitialMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:18:28)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:46:32)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: MessageEmbed is not a function","stack":"TypeError: MessageEmbed is not a function\n    at MessagesUtils.createEmbed (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:118:16)\n    at MessagesUtils.sendInitialMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:18:28)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:46:32)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: MessageEmbed is not a constructor","stack":"TypeError: MessageEmbed is not a constructor\n    at MessagesUtils.createEmbed (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:82:23)\n    at MessagesUtils.sendInitialMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:18:28)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:46:32)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: MessageEmbed is not a function","stack":"TypeError: MessageEmbed is not a function\n    at MessagesUtils.createEmbed (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:82:23)\n    at MessagesUtils.sendInitialMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:18:28)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:46:32)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: (intermediate value).setColor is not a function","stack":"TypeError: (intermediate value).setColor is not a function\n    at MessagesUtils.createEmbed (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:83:14)\n    at MessagesUtils.sendInitialMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:18:28)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:46:32)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: Cannot read properties of undefined (reading 'addToQueue')","stack":"TypeError: Cannot read properties of undefined (reading 'addToQueue')\n    at MessagesUtils.sendInitialMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:14:27)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:46:32)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: this.updateQueue is not a function","stack":"TypeError: this.updateQueue is not a function\n    at MessagesUtils.updateMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:24:14)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:50:32)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: this.updateQueue is not a function","stack":"TypeError: this.updateQueue is not a function\n    at MessagesUtils.updateMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:24:14)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:50:32)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: this.updateQueue is not a function","stack":"TypeError: this.updateQueue is not a function\n    at MessagesUtils.updateMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:24:14)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:55:32)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: this.queues.getQueue is not a function","stack":"TypeError: this.queues.getQueue is not a function\n    at QueueManager.addToQueue (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\QueueManager.js:12:58)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:45:27)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: Assignment to constant variable.","stack":"TypeError: Assignment to constant variable.\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:59:27)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"error","message":"Error: Cannot read properties of undefined (reading 'push')","stack":"TypeError: Cannot read properties of undefined (reading 'push')\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:50:27)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: this.formatDuration is not a function","stack":"TypeError: this.formatDuration is not a function\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:56:48)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: undefined is not a function","stack":"TypeError: undefined is not a function\n    at Array.map (<anonymous>)\n    at MessagesUtils.createEmbed (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:50:72)\n    at MessagesUtils.sendInitialMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:16:28)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:46:32)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error ao executar o comando: args.join is not a function","stack":"TypeError: args.join is not a function\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:20:26)\n    at DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:63:39)\n    at DiscordBot.emit (node:events:517:28)\n    at MessageCreateAction.handle (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\actions\\MessageCreate.js:28:14)\n    at module.exports [as MESSAGE_CREATE] (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\handlers\\MESSAGE_CREATE.js:4:32)\n    at WebSocketManager.handlePacket (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:355:31)\n    at WebSocketManager.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:239:12)\n    at WebSocketManager.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)\n    at WebSocketShard.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@discordjs\\ws\\dist\\index.js:1173:51)\n    at WebSocketShard.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error ao executar o comando: args.join is not a function","stack":"TypeError: args.join is not a function\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:20:26)\n    at DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:63:39)\n    at DiscordBot.emit (node:events:517:28)\n    at MessageCreateAction.handle (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\actions\\MessageCreate.js:28:14)\n    at module.exports [as MESSAGE_CREATE] (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\handlers\\MESSAGE_CREATE.js:4:32)\n    at WebSocketManager.handlePacket (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:355:31)\n    at WebSocketManager.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\discord.js\\src\\client\\websocket\\WebSocketManager.js:239:12)\n    at WebSocketManager.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)\n    at WebSocketShard.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@discordjs\\ws\\dist\\index.js:1173:51)\n    at WebSocketShard.emit (C:\\Users\\ength\\Desktop\\MelodyBotJs\\node_modules\\@vladfrangu\\async_event_emitter\\dist\\index.js:282:31)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: embed.addField is not a function","stack":"TypeError: embed.addField is not a function\n    at MessagesUtils.updateMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:31:13)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:60:26)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: MessageEmbed is not a constructor","stack":"TypeError: MessageEmbed is not a constructor\n    at MessagesUtils.createEmbed (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:59:23)\n    at MessagesUtils.sendInitialMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:15:28)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:51:24)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: (intermediate value).setColor is not a function","stack":"TypeError: (intermediate value).setColor is not a function\n    at MessagesUtils.createEmbed (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:60:14)\n    at MessagesUtils.sendInitialMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:15:28)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:51:24)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"error","message":"Error: Cannot read properties of undefined (reading 'length')","stack":"TypeError: Cannot read properties of undefined (reading 'length')\n    at MessagesUtils.createEmbed (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:62:50)\n    at MessagesUtils.sendInitialMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:15:24)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:51:24)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: Cannot read properties of null (reading 'url')","stack":"TypeError: Cannot read properties of null (reading 'url')\n    at C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:55:42\n    at Array.some (<anonymous>)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:53:52)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"error","message":"Error: Cannot read properties of null (reading 'url')","stack":"TypeError: Cannot read properties of null (reading 'url')\n    at C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:55:42\n    at Array.some (<anonymous>)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:53:52)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"info","message":"Comando \"skip\" foi acionado."}
+{"level":"info","message":"Comando \"skip\" concluído."}
+{"level":"info","message":"Logado no Servidor MelodyBot#6480"}
+{"level":"error","message":"Error: embed.title is not a function","stack":"TypeError: embed.title is not a function\n    at MessagesUtils.updateMessage (C:\\Users\\ength\\Desktop\\MelodyBotJs\\utils\\messagesUtils.js:25:27)\n    at PlayCommand.execute (C:\\Users\\ength\\Desktop\\MelodyBotJs\\commands\\play.js:60:26)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DiscordBot.<anonymous> (C:\\Users\\ength\\Desktop\\MelodyBotJs\\modules\\DiscordBot.js:62:25)"}
