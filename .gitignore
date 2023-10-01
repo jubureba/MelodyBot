@@ -73,6 +73,9 @@ now.json
 # Output of 'npm pack'
 *.tgz
 
+# LOG
+*.log
+
 # Yarn Integrity file
 .yarn-integrity
 
