@@ -16,63 +16,59 @@ class PlayCommand {
   }
 
   async execute(message, args) {
-    const query = args.join(' ');
-    //const query = message.content.split('play')[1];
-    console.log('Execute command: !play', query);
-
-
-    if (!query) {
-      message.channel.send('Please provide a search query.');
-      return;
-    }
-
-    if (!message.member.voice.channelId) {
-      message.channel.send('You must be in a voice channel to use this command.');
-      return;
-    }
-
-    const guildId = message.guildId;
-    const voiceChannelId = message.member.voice.channelId;
-
     try {
-
+      const query = args.join(' ');
+      console.log('Execute command: !play', query);
+  
+      // Verifica se o autor da mensagem é o próprio bot
+      if (message.author.bot) {
+        return;
+      }
+  
+      if (!query) {
+        message.channel.send('Please provide a search query.');
+        return;
+      }
+  
+      if (!message.member.voice.channelId) {
+        message.channel.send('Voce precisa conectar em um canal de voz antes.');
+        return;
+      }
+  
+      const guildId = message.guildId;
+      const voiceChannelId = message.member.voice.channelId;
+  
       const videoInfo = await this.youtubeAPI.search(query, { limit: 1 });
-
+  
+      if (!videoInfo || !videoInfo.url) {
+        message.channel.send('Não encontrei nada.');
+        logger.error(videoInfo);
+        return;
+      }
+  
       const streamInfo = await this.youtubeAPI.stream(videoInfo.url);
       const resource = createAudioResource(streamInfo.stream, { inputType: streamInfo.type });
-
+  
       const messages = this.getOrCreateMessagesInstance(guildId, message.channel);
-
+  
       let audioPlayer = this.bot.audioPlayers.get(guildId);
       if (!audioPlayer) {
         audioPlayer = this.createAudioPlayerAndConnect(guildId, resource, voiceChannelId, message);
-        //this.queueManager.addToQueue(guildId, videoInfo, resource);
-
         await messages.sendInitialMessage(videoInfo, resource);
       } else {
-        const isAlreadyInQueue = audioPlayer.queue.some((queuedResource) => {
-          // Verifique se o URL do recurso atual é igual ao URL do recurso que estamos tentando adicionar
-          return queuedResource.metadata.url === resource.metadata.url;
-        });
-
-        if (!isAlreadyInQueue) {
+        
           audioPlayer.queue.push(resource);
           await messages.updateMessage(videoInfo, resource);
-        } else {
-          message.channel.send('This song is already in the queue.');
-          return;
-        }
-
+        
       }
-
+  
       if (!this.queueManager.getIsPlaying(guildId)) {
         audioPlayer.play(resource);
         this.queueManager.setIsPlaying(guildId, true);
       }
-
     } catch (error) {
-      logger.error('Error:', error);
-      message.channel.send('An error occurred while fetching and playing the audio.');
+      logger.error('An error occurred:', error);
+      message.channel.send('Um erro aconteceu.');
     }
   }
 

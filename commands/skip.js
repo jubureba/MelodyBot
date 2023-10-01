@@ -16,9 +16,9 @@ class SkipCommand {
 
         if (audioPlayer && audioPlayer.state.status === AudioPlayerStatus.Playing) {
             audioPlayer.stop();
-            message.channel.send('Skipped the current song.');
+            message.channel.send('Música pulada.');
         } else {
-            message.channel.send('There is nothing to skip.');
+            message.channel.send('Não há musica na fila.');
         }
 
         logger.info('Comando "skip" concluído.');
