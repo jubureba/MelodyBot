@@ -13,6 +13,7 @@ const intents = [
   GatewayIntentBits.GuildMessages,
   GatewayIntentBits.MessageContent,
   GatewayIntentBits.GuildVoiceStates,
+  GatewayIntentBits.GuildMessageReactions,
 ];
 
 class DiscordBot extends Client {
@@ -70,6 +71,57 @@ class DiscordBot extends Client {
         }
       }
     });
+
+    this.on('messageReactionAdd', async (reaction, user) => {
+      if (user.bot) return;
+
+      if (reaction.emoji.name === '⏭️') {
+        const args = ['skip']; // Argumentos para o comando voltar
+        const command = this.commandManager.getCommand('skip'); // Substitua com seu método real para obter o comando
+        if (command) {
+          try {
+            await command.execute(reaction.message, args);
+            reaction.users.remove(user);
+          } catch (error) {
+            handleException(error);
+          }
+        }
+      } else if (reaction.emoji.name === '⏹️') {
+        const args = ['stop']; // Argumentos para o comando voltar
+        const command = this.commandManager.getCommand('stop'); // Substitua com seu método real para obter o comando
+        if (command) {
+          try {
+            await command.execute(reaction.message, args);
+            reaction.users.remove(user);
+          } catch (error) {
+            handleException(error);
+          }
+        }
+      } else if (reaction.emoji.name === '🔉') {
+        const command = this.commandManager.getCommand('volume'); // Substitua com seu método real para obter o comando
+        if (command) {
+          try {
+            await command.decreaseVolume(reaction.message);
+            reaction.users.remove(user);
+          } catch (error) {
+            handleException(error);
+          }
+        }
+      } else if (reaction.emoji.name === '🔊') {
+        const command = this.commandManager.getCommand('volume'); // Substitua com seu método real para obter o comando
+        if (command) {
+          try {
+            await command.increaseVolume(reaction.message);
+            reaction.users.remove(user);
+          } catch (error) {
+            handleException(error);
+          }
+        }
+      }
+
+      
+    });
+
   }
 
   setupUnhandledExceptionHandling() {

@@ -18,47 +18,52 @@ class PlayCommand {
 
   async execute(message, args) {
     try {
-      const query = args.join(' ');
-  
+      let query = args.join(' ');
+
       if (message.author.bot) {
         return;
       }
-  
+
       if (!query) {
         message.channel.send('Please provide a search query.');
         return;
       }
-  
+
       if (!message.member.voice.channelId) {
         message.channel.send('Voce precisa conectar em um canal de voz antes.');
         return;
       }
-  
+
       const guildId = message.guildId;
       const voiceChannelId = message.member.voice.channelId;
-  
+
+      if (query.includes('&list')) {
+        const url = query;
+        query = url.split('&')[0];
+      }
+
       const videoInfo = await this.youtubeAPI.search(query, { limit: 1 });
-  
+
       if (!videoInfo || !videoInfo.url) {
         message.channel.send('Não encontrei nada.');
         handleException(videoInfo);
         return;
       }
-  
+
       const streamInfo = await this.youtubeAPI.stream(videoInfo.url);
       const resource = createAudioResource(streamInfo.stream, { inputType: streamInfo.type });
-  
+
       const messages = this.getOrCreateMessagesInstance(guildId, message);
-  
+
       let audioPlayer = this.bot.audioPlayers.get(guildId);
       if (!audioPlayer) {
         audioPlayer = this.createAudioPlayerAndConnect(guildId, resource, voiceChannelId, message);
         await messages.sendInitialMessage(videoInfo, resource);
       } else {
-          audioPlayer.queue.push(resource);
-          await messages.updateMessage(videoInfo, resource);
+        audioPlayer.queue.push(resource);
+        await messages.updateMessage(videoInfo, resource);
       }
-  
+
       if (!this.queueManager.getIsPlaying(guildId)) {
         audioPlayer.play(resource);
         this.queueManager.setIsPlaying(guildId, true);
