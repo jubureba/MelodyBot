@@ -6,20 +6,20 @@ class MessagesUtils {
   constructor(message, queueManager) {
     this.textChannel = message.channel;
     this.message = message;
-    this.message = null;
     this.queueManager = queueManager;
     this.nowPlayingInfo = null;
+    this.author = message.author; // Armazena o autor original da mensagem
   }
 
   async sendInitialMessage(songInfo, resource) {
-     // Exclua mensagens anteriores no canal
-     //await this.textChannel.bulkDelete(100, true);
-    
-     this.queueManager.addToQueue(this.textChannel.guildId, songInfo, resource);
-     this.nowPlayingInfo = songInfo;
-     const embed = this.createEmbed();
-     this.message = await this.textChannel.send({ embeds: [embed] });
-     await this.addReactions();
+    // Exclua mensagens anteriores no canal
+    //await this.textChannel.bulkDelete(100, true);
+
+    this.queueManager.addToQueue(this.textChannel.guildId, songInfo, resource, this.author);
+    this.nowPlayingInfo = songInfo;
+    const embed = this.createEmbed();
+    this.message = await this.textChannel.send({ embeds: [embed] });
+    await this.addReactions();
   }
 
   async updateMessage(newSongInfo, resource) {
@@ -27,32 +27,32 @@ class MessagesUtils {
       console.error('Tentativa de atualizar a fila com informações de música nulas.');
       return;
     }
-  
+
     const isNewSong = this.queueManager.getQueue(this.textChannel.guildId).size === 0 ||
-    ![...this.queueManager.getQueue(this.textChannel.guildId).values()].some((info) => info.videoInfo.title === newSongInfo.title);
-  
+      ![...this.queueManager.getQueue(this.textChannel.guildId).values()].some((info) => info.videoInfo.title === newSongInfo.title);
+
     if (isNewSong) {
       // Se a fila estiver vazia ou a nova música não estiver na fila, adicione uma nova linha
-      console.log(this.message.author.username);
-      this.queueManager.addToQueue(this.textChannel.guildId, newSongInfo, resource, this.message.author.username);
+      console.log(this.author.username);
+      this.queueManager.addToQueue(this.textChannel.guildId, newSongInfo, resource, this.author.username);
     }
-  
+
     const embed = this.createEmbed();
-  
+
     try {
       await this.message.edit({ embeds: [embed] });
     } catch (error) {
       handleException(error);
     }
     this.nowPlayingInfo = newSongInfo;
-  
+
     // Apague todas as mensagens subsequentes no canal, exceto as do bot
-    const messagesToDelete = await this.textChannel.messages.fetch({ after: this.message.id });
+    /*const messagesToDelete = await this.textChannel.messages.fetch({ after: this.message.id });
     messagesToDelete.forEach(async (message) => {
       if (message.author.id !== this.textChannel.client.user.id) {
         await message.delete();
       }
-    });
+    });*/
   }
   async removeSongFromQueue() {
     await this.queueManager.removeFromQueue(this.textChannel.guildId, 0);
@@ -60,11 +60,11 @@ class MessagesUtils {
 
   async addReactions() {
     if (this.message) {
-      await this.message.react('⏮️');
-      await this.message.react('⏸️');
+      //await this.message.react('⏮️');
+      //await this.message.react('⏸️');
       await this.message.react('⏭️');
-      await this.message.react('🔊');
-      await this.message.react('🔉');
+      //await this.message.react('🔉');
+      //await this.message.react('🔊');
       await this.message.react('⏹️');
     }
   }
@@ -79,10 +79,10 @@ class MessagesUtils {
 
   createEmbed() {
     const queueInfo = this.queueManager.getQueue(this.textChannel.guildId);
-  
+
     const embed = {
       color: 0xFF0000,
-      title: queueInfo.length > 0 ? `**Tocando Agora**` : 'Aguardando Início...',
+      title: queueInfo.length > 0 ? '**Tocando Agora**' : 'Aguardando Início...',
       author: {
         name: queueInfo.length > 0 ? queueInfo.values().next().value.videoInfo.title || 'Título Desconhecido' : 'MelodyBot',
         icon_url: queueInfo.length > 0 && queueInfo.values().next().value.videoInfo.thumbnails && queueInfo.values().next().value.videoInfo.thumbnails.length > 0
@@ -106,7 +106,7 @@ class MessagesUtils {
               const title = info.videoInfo ? info.videoInfo.title || 'Título Desconhecido' : 'Título Desconhecido';
               const author = info.videoInfo && info.videoInfo.channel ? info.videoInfo.channel.name || 'Desconhecido' : 'Desconhecido';
               const duration = info.videoInfo ? this.formatDuration(info.videoInfo.durationRaw) || 'Desconhecida' : 'Desconhecida';
-              return `**${index + 1}.** ${title}` ; //(Adicionado por: ${info.addedBy})
+              return `**${index + 1}.** [${title}](${info.videoInfo.url}) - **${info.addedBy}**`; //
             }).join('\n')
             : 'Fila Vazia',
         },
@@ -116,7 +116,7 @@ class MessagesUtils {
         icon_url: 'https://i.ibb.co/Hg7tpbS/logo.png',
       },
     };
-  
+
     return new Embed(embed);
   }
 
