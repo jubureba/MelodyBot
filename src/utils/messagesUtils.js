@@ -1,6 +1,8 @@
 const { Embed } = require('discord.js');
 const ytdl = require('ytdl-core');
-const { logger, handleException } = require('../utils/loggerUtils');
+const logger = require('../utils/loggerUtils');
+const ExceptionHandling = require('../utils/exceptionHandlingUtils');
+
 
 class MessagesUtils {
   constructor(message, queueManager) {
@@ -13,7 +15,7 @@ class MessagesUtils {
 
   async sendInitialMessage(songInfo, resource) {
     // Exclua mensagens anteriores no canal
-    //await this.textChannel.bulkDelete(100, true);
+    await this.textChannel.bulkDelete(100, true);
 
     this.queueManager.addToQueue(this.textChannel.guildId, songInfo, resource, this.author);
     this.nowPlayingInfo = songInfo;
@@ -32,8 +34,6 @@ class MessagesUtils {
       ![...this.queueManager.getQueue(this.textChannel.guildId).values()].some((info) => info.videoInfo.title === newSongInfo.title);
 
     if (isNewSong) {
-      // Se a fila estiver vazia ou a nova música não estiver na fila, adicione uma nova linha
-      console.log(this.author.username);
       this.queueManager.addToQueue(this.textChannel.guildId, newSongInfo, resource, this.author.username);
     }
 
@@ -42,17 +42,17 @@ class MessagesUtils {
     try {
       await this.message.edit({ embeds: [embed] });
     } catch (error) {
-      handleException(error);
+      ExceptionHandling.handleException(error);
     }
     this.nowPlayingInfo = newSongInfo;
 
     // Apague todas as mensagens subsequentes no canal, exceto as do bot
-    /*const messagesToDelete = await this.textChannel.messages.fetch({ after: this.message.id });
+    const messagesToDelete = await this.textChannel.messages.fetch({ after: this.message.id });
     messagesToDelete.forEach(async (message) => {
       if (message.author.id !== this.textChannel.client.user.id) {
         await message.delete();
       }
-    });*/
+    });
   }
   async removeSongFromQueue() {
     await this.queueManager.removeFromQueue(this.textChannel.guildId, 0);
