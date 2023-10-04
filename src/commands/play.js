@@ -3,14 +3,15 @@ const createCustomAdapter = require('./createCustomAdapter');
 const MessagesUtils = require('../utils/messagesUtils');
 const QueueManager = require('../modules/QueueManager');
 const YouTubeAPI = require('../modules/YouTubeAPI');
-const { logger, handleException } = require('../utils/loggerUtils');
+const logger = require('../utils/loggerUtils');
+const ExceptionHandling = require('../utils/exceptionHandlingUtils');
 
 class PlayCommand {
   constructor(bot) {
     this.bot = bot;
     this.name = 'play';
     this.aliases = ['p'];
-    this.description = 'Play a song from YouTube';
+    this.description = 'Reproduzir uma música do YouTube';
     this.youtubeAPI = new YouTubeAPI();
     this.queueManager = new QueueManager();
     this.messages = new Map();
@@ -25,12 +26,12 @@ class PlayCommand {
       }
 
       if (!query) {
-        message.channel.send('Please provide a search query.');
+        message.channel.send('Por favor, forneça uma consulta de pesquisa.');
         return;
       }
 
       if (!message.member.voice.channelId) {
-        message.channel.send('Voce precisa conectar em um canal de voz antes.');
+        message.channel.send('Você precisa estar conectado a um canal de voz antes.');
         return;
       }
 
@@ -45,8 +46,7 @@ class PlayCommand {
       const videoInfo = await this.youtubeAPI.search(query, { limit: 1 });
 
       if (!videoInfo || !videoInfo.url) {
-        message.channel.send('Não encontrei nada.');
-        handleException(videoInfo);
+        message.channel.send('Desculpe, não consegui encontrar o que você estava procurando.');
         return;
       }
 
@@ -69,19 +69,18 @@ class PlayCommand {
         this.queueManager.setIsPlaying(guildId, true);
       }
     } catch (error) {
-      handleException(error);
-      message.channel.send('Um erro aconteceu.');
+      ExceptionHandling.handleException(error);
     }
   }
 
   getOrCreateMessagesInstance(guildId, message) {
     if (!this.messages.has(guildId)) {
       if (!message) {
-        console.error('Text channel is undefined.');
+        console.error('O canal de texto não está definido.');
         return null;
       }
       this.messages.set(guildId, new MessagesUtils(message, this.queueManager));
-      console.log('Created MessagesUtils instance.');
+      console.log('Instância MessagesUtils criada.');
     }
     return this.messages.get(guildId);
   }
@@ -103,7 +102,7 @@ class PlayCommand {
       this.handleIdleState(guildId, newAudioPlayer, resource);
     });
     newAudioPlayer.on('error', (error) => {
-      handleException(error);
+      ExceptionHandling.handleException(error);
     });
 
     return newAudioPlayer;
@@ -113,26 +112,29 @@ class PlayCommand {
     const messages = this.messages.get(guildId);
     const guildQueue = this.queueManager.getQueue(guildId);
 
-    const firstKey = guildQueue.keys().next().value;
-    //guildQueue.delete(firstKey);
-    this.queueManager.removeFromQueue(guildId, firstKey);
-
-    //this.queueManager.removeFromQueue(guildId, guildQueue.values().first().value)
-    if (guildQueue && guildQueue.length > 0) {
-      const nextSongInfo = guildQueue.values().next().value;
-
-      if (nextSongInfo) {
-        const nextResource = audioPlayer.queue.shift();
-        audioPlayer.play(nextResource);
-        this.queueManager.setNowPlaying(guildId, nextSongInfo.videoInfo);
-        messages.updateMessage(nextSongInfo.videoInfo, resource);
-      }
-    } else {
+    if (!guildQueue || guildQueue.length === 0 || audioPlayer.queue.length === 0) {
+      // Lidar com o caso em que a fila está vazia ou indefinida
       audioPlayer.stop();
       this.queueManager.setIsPlaying(guildId, false);
       this.queueManager.clearQueue(guildId);
+      return;
+    }
+
+    const firstKey = guildQueue.keys().next().value;
+    this.queueManager.removeFromQueue(guildId, firstKey);
+
+    try {
+      const nextSongInfo = guildQueue.values().next().value;
+      const nextResource = audioPlayer.queue.shift();
+
+      audioPlayer.play(nextResource);
+      this.queueManager.setNowPlaying(guildId, nextSongInfo.videoInfo);
+      messages.updateMessage(nextSongInfo.videoInfo, resource);
+    } catch (error) {
+      console.error('Erro ao reproduzir áudio:', error);
     }
   }
 }
+
 
 module.exports = PlayCommand;

@@ -13,11 +13,4 @@ const logger = createLogger({
   ],
 });
 
-function handleException(error) {
-  logger.error(`Unhandled Exception: ${error.message}`);
-}
-
-module.exports = {
-  logger,
-  handleException,
-};
+module.exports = logger;

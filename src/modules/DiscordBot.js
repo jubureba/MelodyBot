@@ -6,7 +6,8 @@ const SkipCommand = require('../commands/skip');
 const StopCommand = require('../commands/stop');
 const QueueCommand = require('../commands/queue');
 
-const { logger, handleException } = require('../utils/loggerUtils');
+const logger = require('../utils/loggerUtils');
+const ExceptionHandling = require('../utils/exceptionHandlingUtils');
 
 const intents = [
   GatewayIntentBits.Guilds,
@@ -64,7 +65,7 @@ class DiscordBot extends Client {
           try {
             await command.execute(message, args);
           } catch (error) {
-            handleException(error);
+            ExceptionHandling.handleException(error);
           }
         } else {
           message.channel.send('Comando não encontrado.');
@@ -83,7 +84,7 @@ class DiscordBot extends Client {
             await command.execute(reaction.message, args);
             reaction.users.remove(user);
           } catch (error) {
-            handleException(error);
+            ExceptionHandling.handleException(error);
           }
         }
       } else if (reaction.emoji.name === '⏹️') {
@@ -94,7 +95,7 @@ class DiscordBot extends Client {
             await command.execute(reaction.message, args);
             reaction.users.remove(user);
           } catch (error) {
-            handleException(error);
+            ExceptionHandling.handleException(error);
           }
         }
       } else if (reaction.emoji.name === '🔉') {
@@ -104,7 +105,7 @@ class DiscordBot extends Client {
             await command.decreaseVolume(reaction.message);
             reaction.users.remove(user);
           } catch (error) {
-            handleException(error);
+            ExceptionHandling.handleException(error);
           }
         }
       } else if (reaction.emoji.name === '🔊') {
@@ -114,19 +115,17 @@ class DiscordBot extends Client {
             await command.increaseVolume(reaction.message);
             reaction.users.remove(user);
           } catch (error) {
-            handleException(error);
+            ExceptionHandling.handleException(error);
           }
         }
       }
-
-      
     });
 
   }
 
   setupUnhandledExceptionHandling() {
     process.on('uncaughtException', (error) => {
-      handleException(error);
+      ExceptionHandling.handleException(error);
       //process.exit(1);
     });
   }
