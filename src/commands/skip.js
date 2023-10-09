@@ -13,7 +13,7 @@ class SkipCommand {
     const audioPlayer = this.bot.audioPlayers.get(guildId);
     if (audioPlayer && audioPlayer.state.status === AudioPlayerStatus.Playing) {
       audioPlayer.stop();
-      message.channel.send('Música pulada com sucesso.');
+      message.channel.send('Música pulada com sucesso. 🎵');
     } else {
       message.channel.send('Desculpe, não há música na fila no momento.');
     }

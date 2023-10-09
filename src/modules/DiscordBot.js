@@ -25,7 +25,7 @@ class DiscordBot extends Client {
     this.commandManager = new CommandManager();
     this.token = config.token;
     this.commandPrefix = config.prefix;
-    this.audioPlayers = new Map(); // Inicialize a mapa de audioPlayers
+    this.audioPlayers = new Map();
 
     const playCommand = new PlayCommand(this);
     const skipCommand = new SkipCommand(this);

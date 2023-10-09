@@ -5,6 +5,8 @@ const QueueManager = require('../modules/QueueManager');
 const YouTubeAPI = require('../modules/YouTubeAPI');
 const logger = require('../utils/loggerUtils');
 const ExceptionHandling = require('../utils/exceptionHandlingUtils');
+const { setTimeout } = require('timers');
+const inactiveTimeouts = new Map();
 
 class PlayCommand {
   constructor(bot) {
@@ -15,6 +17,7 @@ class PlayCommand {
     this.youtubeAPI = new YouTubeAPI();
     this.queueManager = new QueueManager();
     this.messages = new Map();
+    
   }
 
   async execute(message, args) {
@@ -50,15 +53,21 @@ class PlayCommand {
         return;
       }
 
+      
+
       const streamInfo = await this.youtubeAPI.stream(videoInfo.url);
       const resource = createAudioResource(streamInfo.stream, { inputType: streamInfo.type });
 
       const messages = this.getOrCreateMessagesInstance(guildId, message);
 
       let audioPlayer = this.bot.audioPlayers.get(guildId);
+      let isNewConnection = false;
+
       if (!audioPlayer) {
         audioPlayer = this.createAudioPlayerAndConnect(guildId, resource, voiceChannelId, message);
+        isNewConnection = true;
         await messages.sendInitialMessage(videoInfo, resource);
+
       } else {
         audioPlayer.queue.push(resource);
         await messages.updateMessage(videoInfo, resource);
@@ -68,6 +77,7 @@ class PlayCommand {
         audioPlayer.play(resource);
         this.queueManager.setIsPlaying(guildId, true);
       }
+
     } catch (error) {
       ExceptionHandling.handleException(error);
     }
@@ -76,11 +86,11 @@ class PlayCommand {
   getOrCreateMessagesInstance(guildId, message) {
     if (!this.messages.has(guildId)) {
       if (!message) {
-        console.error('O canal de texto não está definido.');
+        logger.error('O canal de texto não está definido.');
         return null;
       }
       this.messages.set(guildId, new MessagesUtils(message, this.queueManager));
-      console.log('Instância MessagesUtils criada.');
+      logger.info('Instância MessagesUtils criada.');
     }
     return this.messages.get(guildId);
   }
@@ -117,6 +127,22 @@ class PlayCommand {
       audioPlayer.stop();
       this.queueManager.setIsPlaying(guildId, false);
       this.queueManager.clearQueue(guildId);
+
+      // Adicione ou reinicie o temporizador de inatividade apenas se não houver música tocando
+      if (!this.queueManager.getIsPlaying(guildId) && !inactiveTimeouts.has(guildId)) {
+        const timeout = setTimeout(() => {
+          const connection = getVoiceConnection(guildId);
+          if (connection) {
+            connection.destroy();
+            inactiveTimeouts.delete(guildId);
+            this.bot.audioPlayers = new Map();
+            logger.info('Bot saiu do canal')
+          }
+        }, 120000); // Tempo em milissegundos (2 minutos)
+        inactiveTimeouts.set(guildId, timeout);
+      }
+
+      messages.idleMessage();
       return;
     }
 
@@ -127,11 +153,16 @@ class PlayCommand {
       const nextSongInfo = guildQueue.values().next().value;
       const nextResource = audioPlayer.queue.shift();
 
+      // Verifique se há um temporizador de inatividade e limpe-o
+      if (inactiveTimeouts.has(guildId)) {
+        clearTimeout(inactiveTimeouts.get(guildId));
+        inactiveTimeouts.delete(guildId);
+      }
       audioPlayer.play(nextResource);
       this.queueManager.setNowPlaying(guildId, nextSongInfo.videoInfo);
       messages.updateMessage(nextSongInfo.videoInfo, resource);
     } catch (error) {
-      console.error('Erro ao reproduzir áudio:', error);
+      logger.error('Erro ao reproduzir áudio:', error);
     }
   }
 }
