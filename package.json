@@ -6,7 +6,7 @@
   "author": "Anderson.Lima",
   "license": "MIT",
   "engines": {
-    "node": "18.x"
+    "node": "16.x"
   },
   "dependencies": {
     "@discordjs/voice": "^0.16.0",
