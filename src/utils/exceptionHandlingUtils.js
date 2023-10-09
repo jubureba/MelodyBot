@@ -1,4 +1,4 @@
-const { logger } = require('../utils/loggerUtils');
+const logger = require('../utils/loggerUtils');
 
 class ExceptionHandling {
   static handleException(error) {

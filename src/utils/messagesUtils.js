@@ -13,6 +13,16 @@ class MessagesUtils {
     this.author = message.author; // Armazena o autor original da mensagem
   }
 
+  async idleMessage() {
+    const embed = this.createEmbed();
+
+    try {
+      await this.message.edit({ embeds: [embed] });
+    } catch (error) {
+      ExceptionHandling.handleException(error);
+    }
+  }
+
   async sendInitialMessage(songInfo, resource) {
     // Exclua mensagens anteriores no canal
     await this.textChannel.bulkDelete(100, true);
@@ -82,9 +92,9 @@ class MessagesUtils {
 
     const embed = {
       color: 0xFF0000,
-      title: queueInfo.length > 0 ? '**Tocando Agora**' : 'Aguardando Início...',
+      title: queueInfo.length > 0 ? '**Tocando Agora**' : 'Nenhuma música para tocar...',
       author: {
-        name: queueInfo.length > 0 ? queueInfo.values().next().value.videoInfo.title || 'Título Desconhecido' : 'MelodyBot',
+        name: queueInfo.length > 0 ? queueInfo.values().next().value.videoInfo.title || 'Título Desconhecido' : 'MelodyBot - O Melhor Bot de Música! 🎙️',
         icon_url: queueInfo.length > 0 && queueInfo.values().next().value.videoInfo.thumbnails && queueInfo.values().next().value.videoInfo.thumbnails.length > 0
           ? queueInfo.values().next().value.videoInfo.thumbnails[0].url
           : 'https://i.ibb.co/Hg7tpbS/logo.png',
@@ -96,8 +106,8 @@ class MessagesUtils {
         {
           name: 'Duração',
           value: queueInfo.length > 0
-            ? this.formatDuration(queueInfo.values().next().value.videoInfo.durationRaw) || 'Desconhecida'
-            : 'Desconhecida',
+            ? this.formatDuration(queueInfo.values().next().value.videoInfo.durationRaw) || '-'
+            : '-',
         },
         {
           name: 'Fila',
