@@ -53,6 +53,10 @@ class PlayCommand {
         return;
       }
 
+      if (inactiveTimeouts.has(guildId)) {
+        clearTimeout(inactiveTimeouts.get(guildId));
+        inactiveTimeouts.delete(guildId);
+      }
       
 
       const streamInfo = await this.youtubeAPI.stream(videoInfo.url);
