@@ -5,9 +5,6 @@
   "repository": "https://github.com/jubureba/MelodyBot.git",
   "author": "Anderson.Lima",
   "license": "MIT",
-  "engines": {
-    "node": "16.x"
-  },
   "dependencies": {
     "@discordjs/voice": "^0.16.0",
     "axios": "^1.5.1",
