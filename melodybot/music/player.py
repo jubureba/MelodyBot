@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from collections import deque
+from collections.abc import Awaitable, Callable
 from enum import Enum
 
 import discord
@@ -30,6 +31,14 @@ class GuildPlayer:
         self.loop_mode: LoopMode = LoopMode.OFF
         self.volume: float = 0.5
 
+        # Votos de skip da faixa atual (ids de usuarios). Limpo a cada troca.
+        self.skip_votes: set[int] = set()
+        # Mensagem unica do "painel do player" neste servidor.
+        self.panel_message: discord.Message | None = None
+        # Callback assincrono chamado sempre que o estado muda (troca de faixa,
+        # fim da fila). O cog usa isso para atualizar o painel.
+        self.on_change: Callable[[GuildPlayer], Awaitable[None]] | None = None
+
         self._next = asyncio.Event()
         self._task: asyncio.Task | None = None
 
@@ -49,6 +58,10 @@ class GuildPlayer:
         if self._task and not self._task.done():
             self._task.cancel()
             self._task = None
+
+    async def notify_change(self) -> None:
+        """Dispara a atualizacao do painel (uso externo: controles/comandos)."""
+        await self._notify_change()
 
     # --- Fila ---
 
@@ -105,9 +118,11 @@ class GuildPlayer:
                 if next_track is None:
                     # Fila vazia: encerra o loop; sera recriado no proximo play.
                     self.current = None
+                    await self._notify_change()
                     return
 
                 self.current = next_track
+                self.skip_votes.clear()  # nova faixa, zera a votacao
                 vc = self.guild.voice_client
                 if vc is None:
                     return
@@ -116,11 +131,19 @@ class GuildPlayer:
                 vc.play(source, after=self._on_track_end)
                 log.info("Tocando em %s: %s", self.guild.id, next_track.title)
 
+                await self._notify_change()
                 await self._next.wait()
         except asyncio.CancelledError:
             raise
         except Exception:  # noqa: BLE001
             log.exception("Falha no player loop de %s", self.guild.id)
+
+    async def _notify_change(self) -> None:
+        if self.on_change is not None:
+            try:
+                await self.on_change(self)
+            except Exception:  # noqa: BLE001
+                log.exception("Falha ao atualizar painel de %s", self.guild.id)
 
     def _pick_next(self) -> Track | None:
         if self.loop_mode == LoopMode.TRACK and self.current is not None:

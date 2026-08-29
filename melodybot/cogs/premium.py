@@ -8,13 +8,11 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
+from .. import ui
 from ..bot import MelodyBot
 from ..plans import PLAN_LABELS, Plan
 
 log = logging.getLogger("melodybot.cogs.premium")
-
-ACCENT = 0x22D3EE
-GOLD = 0xFACC15
 
 
 class PremiumCog(commands.Cog):
@@ -28,26 +26,39 @@ class PremiumCog(commands.Cog):
 
         plan = await self.bot.get_plan(interaction.guild.id)
         limits = self.bot.limits_for(plan)
+        is_premium = plan == Plan.PREMIUM
 
-        queue = "ilimitada" if limits.queue_limit == 0 else f"{limits.queue_limit} faixas"
+        queue = "♾️ ilimitada" if limits.queue_limit == 0 else f"{limits.queue_limit} faixas"
         track_len = (
-            "sem limite"
+            "♾️ sem limite"
             if limits.max_track_seconds == 0
             else f"{limits.max_track_seconds // 60} min"
         )
-        emb = discord.Embed(
-            title=f"📦 Plano: {PLAN_LABELS[plan]}",
-            color=GOLD if plan == Plan.PREMIUM else ACCENT,
-        )
-        emb.add_field(name="Fila", value=queue, inline=True)
-        emb.add_field(name="Duracao/faixa", value=track_len, inline=True)
+
+        guild_icon = interaction.guild.icon.url if interaction.guild.icon else None
+        emb = ui.base_embed(ui.GOLD if is_premium else ui.ACCENT)
+        emb.set_author(name=f"Plano do servidor · {PLAN_LABELS[plan]}", icon_url=guild_icon)
+        emb.title = "✨ Premium ativo" if is_premium else "📦 Plano Free"
+        emb.add_field(name="🎶 Fila", value=queue, inline=True)
+        emb.add_field(name="⏱️ Duração/faixa", value=track_len, inline=True)
         emb.add_field(
-            name="Filtros de audio",
-            value="✅" if limits.audio_filters else "❌",
+            name="🎛️ Filtros de áudio",
+            value="✅ liberado" if limits.audio_filters else "🔒 bloqueado",
             inline=True,
         )
-        if plan == Plan.FREE:
-            emb.set_footer(text="Use /premium para desbloquear tudo.")
+        emb.add_field(
+            name="💾 Playlists salvas",
+            value="✅ liberado" if limits.saved_playlists else "🔒 bloqueado",
+            inline=True,
+        )
+        emb.add_field(
+            name="⚡ Suporte",
+            value="prioritário" if limits.priority_support else "padrão",
+            inline=True,
+        )
+        emb.add_field(name="\u200b", value="\u200b", inline=True)
+        if not is_premium:
+            emb.set_footer(text="Use /premium para desbloquear tudo · " + ui.FOOTER_TEXT)
         await interaction.response.send_message(embed=emb)
 
     @app_commands.command(name="premium", description="Assine o Premium e libere tudo.")
@@ -56,22 +67,22 @@ class PremiumCog(commands.Cog):
             return await interaction.response.send_message("Use em um servidor.", ephemeral=True)
 
         price = self.bot.settings.premium_price_brl
-        emb = discord.Embed(
-            title="✨ MelodyBot Premium",
-            description=(
-                "Libere o melhor do MelodyBot pro seu servidor:\n\n"
-                "🎶 Fila **ilimitada**\n"
-                "⏱️ Faixas **sem limite** de duracao\n"
-                "🎛️ **Filtros de audio** (bass boost, nightcore)\n"
-                "💾 **Playlists salvas**\n"
-                "⚡ Suporte prioritario\n\n"
-                f"**R$ {price:.2f}/mes**"
-            ),
-            color=GOLD,
+        emb = ui.base_embed(ui.GOLD)
+        emb.set_author(name="MelodyBot Premium")
+        emb.title = "✨ Desbloqueie tudo"
+        emb.description = (
+            "Leve o MelodyBot ao máximo no seu servidor:\n\n"
+            "🎶 Fila **ilimitada**\n"
+            "⏱️ Faixas **sem limite** de duração\n"
+            "🎛️ **Filtros de áudio** (bass boost, nightcore)\n"
+            "💾 **Playlists salvas**\n"
+            "⚡ **Suporte prioritário**"
         )
+        emb.add_field(name="💵 Preço", value=f"**R$ {price:.2f}** / mês", inline=True)
+        emb.add_field(name="⏳ Duração", value="30 dias", inline=True)
 
         if not self.bot.payments.enabled:
-            emb.set_footer(text="Pagamentos ainda nao configurados neste bot.")
+            emb.set_footer(text="Pagamentos ainda não configurados neste bot. · " + ui.FOOTER_TEXT)
             return await interaction.response.send_message(embed=emb, ephemeral=True)
 
         await interaction.response.defer(ephemeral=True)
@@ -84,10 +95,10 @@ class PremiumCog(commands.Cog):
         except Exception as exc:  # noqa: BLE001
             log.warning("Falha ao criar checkout: %s", exc)
             return await interaction.followup.send(
-                embed=discord.Embed(
-                    title="❌ Nao consegui gerar o pagamento",
-                    description="Tente novamente mais tarde.",
-                    color=0xEF4444,
+                embed=ui.simple(
+                    "❌ Não consegui gerar o pagamento",
+                    "Tente novamente mais tarde.",
+                    color=ui.ERROR,
                 ),
                 ephemeral=True,
             )
