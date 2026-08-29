@@ -57,11 +57,18 @@ class Settings:
     webhook_port: int = 8080
     premium_price_brl: float = 9.90
 
+    ai_provider: str = "none"
+    gemini_api_key: str = ""
+
     log_level: str = "INFO"
 
     @property
     def payments_enabled(self) -> bool:
         return self.payment_provider.lower() not in ("", "none")
+
+    @property
+    def ai_enabled(self) -> bool:
+        return self.ai_provider.lower() not in ("", "none")
 
     @classmethod
     def load(cls) -> Settings:
@@ -81,5 +88,7 @@ class Settings:
             payment_webhook_base_url=os.getenv("PAYMENT_WEBHOOK_BASE_URL", "").strip(),
             webhook_port=_get_int("WEBHOOK_PORT", 8080),
             premium_price_brl=_get_float("PREMIUM_PRICE_BRL", 9.90),
+            ai_provider=os.getenv("AI_PROVIDER", "none").strip(),
+            gemini_api_key=os.getenv("GEMINI_API_KEY", "").strip(),
             log_level=os.getenv("LOG_LEVEL", "INFO").strip().upper(),
         )

@@ -29,6 +29,17 @@ CREATE TABLE IF NOT EXISTS payments (
     amount        REAL,
     created_at    TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS play_history (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    guild_id      INTEGER NOT NULL,
+    title         TEXT NOT NULL,
+    url           TEXT,
+    requester_id  INTEGER,
+    played_at     TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_history_guild ON play_history(guild_id);
 """
 
 
@@ -124,3 +135,66 @@ class Database:
             (guild_id, provider, external_id, status, amount, _now()),
         )
         await self._conn.commit()
+
+    # --- Play history (diferencial: memoria do servidor) ---
+
+    async def record_play(
+        self, guild_id: int, title: str, url: str | None, requester_id: int | None
+    ) -> None:
+        await self._conn.execute(
+            """
+            INSERT INTO play_history (guild_id, title, url, requester_id, played_at)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (guild_id, title, url, requester_id, _now()),
+        )
+        await self._conn.commit()
+
+    async def recent_titles(self, guild_id: int, limit: int = 15) -> list[str]:
+        """Titulos tocados recentemente (para dar contexto de gosto a IA)."""
+        async with self._conn.execute(
+            """
+            SELECT title FROM play_history
+            WHERE guild_id = ?
+            ORDER BY id DESC LIMIT ?
+            """,
+            (guild_id, limit),
+        ) as cursor:
+            rows = await cursor.fetchall()
+        return [row["title"] for row in rows]
+
+    async def top_tracks(self, guild_id: int, limit: int = 10) -> list[tuple[str, int]]:
+        async with self._conn.execute(
+            """
+            SELECT title, COUNT(*) AS plays FROM play_history
+            WHERE guild_id = ?
+            GROUP BY title
+            ORDER BY plays DESC, MAX(id) DESC
+            LIMIT ?
+            """,
+            (guild_id, limit),
+        ) as cursor:
+            rows = await cursor.fetchall()
+        return [(row["title"], row["plays"]) for row in rows]
+
+    async def top_requesters(self, guild_id: int, limit: int = 5) -> list[tuple[int, int]]:
+        async with self._conn.execute(
+            """
+            SELECT requester_id, COUNT(*) AS plays FROM play_history
+            WHERE guild_id = ? AND requester_id IS NOT NULL
+            GROUP BY requester_id
+            ORDER BY plays DESC
+            LIMIT ?
+            """,
+            (guild_id, limit),
+        ) as cursor:
+            rows = await cursor.fetchall()
+        return [(row["requester_id"], row["plays"]) for row in rows]
+
+    async def total_plays(self, guild_id: int) -> int:
+        async with self._conn.execute(
+            "SELECT COUNT(*) AS c FROM play_history WHERE guild_id = ?",
+            (guild_id,),
+        ) as cursor:
+            row = await cursor.fetchone()
+        return row["c"] if row else 0
