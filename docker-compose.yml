@@ -1,0 +1,13 @@
+services:
+  melodybot:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - melodybot-data:/app/data
+    # Exponha a porta do webhook so se usar pagamentos.
+    ports:
+      - "${WEBHOOK_PORT:-8080}:${WEBHOOK_PORT:-8080}"
+
+volumes:
+  melodybot-data:
