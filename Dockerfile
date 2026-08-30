@@ -10,8 +10,10 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt requirements-full.txt ./
+# Instala base + features opcionais (IA e pagamento). Se nao usar, as libs
+# ficam ociosas; os providers so ativam quando ha chave no .env.
+RUN pip install --no-cache-dir -r requirements-full.txt
 
 COPY melodybot ./melodybot
 

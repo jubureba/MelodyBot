@@ -10,6 +10,7 @@ from enum import Enum
 
 import discord
 
+from .filters import AudioFilter
 from .track import Track, make_audio_source
 
 log = logging.getLogger("melodybot.player")
@@ -30,6 +31,7 @@ class GuildPlayer:
         self.current: Track | None = None
         self.loop_mode: LoopMode = LoopMode.OFF
         self.volume: float = 0.5
+        self.audio_filter: AudioFilter = AudioFilter.NONE
 
         # Votos de skip da faixa atual (ids de usuarios). Limpo a cada troca.
         self.skip_votes: set[int] = set()
@@ -96,6 +98,18 @@ class GuildPlayer:
             return True
         return False
 
+    def apply_filter(self, audio_filter: AudioFilter) -> bool:
+        """Troca o filtro e reinicia a faixa atual para aplicar (se tocando)."""
+        self.audio_filter = audio_filter
+        vc = self.guild.voice_client
+        if vc and self.current and (vc.is_playing() or vc.is_paused()):
+            # Reenfileira a atual no inicio e forca o avanco para recria-la.
+            self.queue.appendleft(self.current)
+            self.current = None
+            vc.stop()  # dispara o _next; o loop pega a faixa com o novo filtro
+            return True
+        return False
+
     def set_volume(self, volume: float) -> None:
         self.volume = max(0.0, min(volume, 2.0))
         vc = self.guild.voice_client
@@ -127,7 +141,7 @@ class GuildPlayer:
                 if vc is None:
                     return
 
-                source = make_audio_source(next_track, self.volume)
+                source = make_audio_source(next_track, self.volume, self.audio_filter)
                 vc.play(source, after=self._on_track_end)
                 log.info("Tocando em %s: %s", self.guild.id, next_track.title)
 

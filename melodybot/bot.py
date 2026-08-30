@@ -22,6 +22,7 @@ INITIAL_COGS = [
     "melodybot.cogs.music",
     "melodybot.cogs.premium",
     "melodybot.cogs.dj",
+    "melodybot.cogs.playlist",
 ]
 
 

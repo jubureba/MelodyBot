@@ -1,6 +1,6 @@
 """Provider de IA usando Google Gemini.
 
-O SDK 'google-generativeai' e importado de forma lazy — nao e dependencia
+O SDK 'google-genai' e importado de forma lazy — nao e dependencia
 obrigatoria de quem roda o bot sem IA.
 """
 
@@ -33,18 +33,17 @@ Exemplo de resposta: ["Artista A - Musica 1", "Artista B - Musica 2"]"""
 class GeminiAIProvider(AIProvider):
     name = "gemini"
 
-    def __init__(self, api_key: str, model: str = "gemini-1.5-flash") -> None:
+    def __init__(self, api_key: str, model: str = "gemini-2.0-flash") -> None:
         if not api_key:
             raise RuntimeError("GEMINI_API_KEY nao configurado.")
         try:
-            import google.generativeai as genai  # noqa: PLC0415
+            from google import genai  # noqa: PLC0415
         except ImportError as exc:
             raise RuntimeError(
-                "Pacote 'google-generativeai' nao instalado. "
-                "Rode: pip install google-generativeai"
+                "Pacote 'google-genai' nao instalado. Rode: pip install google-genai"
             ) from exc
-        genai.configure(api_key=api_key)
-        self._model = genai.GenerativeModel(model)
+        self._client = genai.Client(api_key=api_key)
+        self._model = model
 
     async def suggest_tracks(
         self, mood: str, count: int, context: list[str] | None = None
@@ -61,7 +60,10 @@ class GeminiAIProvider(AIProvider):
         loop = asyncio.get_running_loop()
         try:
             response = await loop.run_in_executor(
-                None, lambda: self._model.generate_content(prompt)
+                None,
+                lambda: self._client.models.generate_content(
+                    model=self._model, contents=prompt
+                ),
             )
             text = response.text or ""
         except Exception as exc:  # noqa: BLE001

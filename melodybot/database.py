@@ -40,6 +40,23 @@ CREATE TABLE IF NOT EXISTS play_history (
 );
 
 CREATE INDEX IF NOT EXISTS idx_history_guild ON play_history(guild_id);
+
+CREATE TABLE IF NOT EXISTS playlists (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    guild_id      INTEGER NOT NULL,
+    name          TEXT NOT NULL,
+    created_at    TEXT NOT NULL,
+    UNIQUE(guild_id, name)
+);
+
+CREATE TABLE IF NOT EXISTS playlist_items (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    playlist_id   INTEGER NOT NULL,
+    title         TEXT NOT NULL,
+    url           TEXT NOT NULL,
+    position      INTEGER NOT NULL,
+    FOREIGN KEY (playlist_id) REFERENCES playlists(id) ON DELETE CASCADE
+);
 """
 
 
@@ -60,6 +77,7 @@ class Database:
             os.makedirs(directory, exist_ok=True)
         self._db = await aiosqlite.connect(self._path)
         self._db.row_factory = aiosqlite.Row
+        await self._db.execute("PRAGMA foreign_keys = ON")
         await self._db.executescript(_SCHEMA)
         await self._db.commit()
 
@@ -198,3 +216,69 @@ class Database:
         ) as cursor:
             row = await cursor.fetchone()
         return row["c"] if row else 0
+
+    # --- Playlists salvas (feature Premium) ---
+
+    async def save_playlist(
+        self, guild_id: int, name: str, items: list[tuple[str, str]]
+    ) -> int:
+        """Cria/substitui uma playlist. items = [(title, url), ...]. Retorna qtd salva."""
+        # Remove playlist existente de mesmo nome (substituicao).
+        await self._conn.execute(
+            "DELETE FROM playlists WHERE guild_id = ? AND name = ?",
+            (guild_id, name),
+        )
+        cursor = await self._conn.execute(
+            "INSERT INTO playlists (guild_id, name, created_at) VALUES (?, ?, ?)",
+            (guild_id, name, _now()),
+        )
+        playlist_id = cursor.lastrowid
+        for position, (title, url) in enumerate(items):
+            await self._conn.execute(
+                """
+                INSERT INTO playlist_items (playlist_id, title, url, position)
+                VALUES (?, ?, ?, ?)
+                """,
+                (playlist_id, title, url, position),
+            )
+        await self._conn.commit()
+        return len(items)
+
+    async def list_playlists(self, guild_id: int) -> list[tuple[str, int]]:
+        async with self._conn.execute(
+            """
+            SELECT p.name, COUNT(i.id) AS n
+            FROM playlists p
+            LEFT JOIN playlist_items i ON i.playlist_id = p.id
+            WHERE p.guild_id = ?
+            GROUP BY p.id
+            ORDER BY p.name
+            """,
+            (guild_id,),
+        ) as cursor:
+            rows = await cursor.fetchall()
+        return [(row["name"], row["n"]) for row in rows]
+
+    async def get_playlist_items(
+        self, guild_id: int, name: str
+    ) -> list[tuple[str, str]]:
+        async with self._conn.execute(
+            """
+            SELECT i.title, i.url
+            FROM playlist_items i
+            JOIN playlists p ON p.id = i.playlist_id
+            WHERE p.guild_id = ? AND p.name = ?
+            ORDER BY i.position
+            """,
+            (guild_id, name),
+        ) as cursor:
+            rows = await cursor.fetchall()
+        return [(row["title"], row["url"]) for row in rows]
+
+    async def delete_playlist(self, guild_id: int, name: str) -> bool:
+        cursor = await self._conn.execute(
+            "DELETE FROM playlists WHERE guild_id = ? AND name = ?",
+            (guild_id, name),
+        )
+        await self._conn.commit()
+        return cursor.rowcount > 0
