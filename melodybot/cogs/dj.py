@@ -10,6 +10,7 @@ from discord.ext import commands
 
 from .. import ui
 from ..bot import MelodyBot
+from ..music.filters import FILTER_LABELS, AudioFilter
 from ..music.track import TrackResolveError, resolve_query
 from ..plans import Plan
 
@@ -139,6 +140,55 @@ class DJCog(commands.Cog):
             state = "ligado"
         await interaction.response.send_message(
             embed=ui.simple(f"📻 Rádio inteligente {state}", color=ui.OK)
+        )
+
+    @app_commands.command(
+        name="filter",
+        description="Aplica um filtro de audio (bass boost, nightcore, etc.).",
+    )
+    @app_commands.choices(
+        preset=[
+            app_commands.Choice(name="Nenhum", value="none"),
+            app_commands.Choice(name="Bass Boost", value="bassboost"),
+            app_commands.Choice(name="Nightcore", value="nightcore"),
+            app_commands.Choice(name="Vaporwave", value="vaporwave"),
+            app_commands.Choice(name="8D", value="8d"),
+            app_commands.Choice(name="Treble", value="treble"),
+        ]
+    )
+    async def filter(
+        self, interaction: discord.Interaction, preset: app_commands.Choice[str]
+    ) -> None:
+        if interaction.guild is None:
+            return await interaction.response.send_message("Use em um servidor.", ephemeral=True)
+
+        plan = await self.bot.get_plan(interaction.guild.id)
+        if plan != Plan.PREMIUM:
+            return await interaction.response.send_message(
+                embed=ui.simple(
+                    "✨ Filtros de áudio são Premium",
+                    "Bass boost, nightcore, 8D e mais.\nUse `/premium`.",
+                    color=ui.GOLD,
+                ),
+                ephemeral=True,
+            )
+
+        player = self.bot.players.get_if_exists(interaction.guild.id)
+        if player is None or player.current is None:
+            return await interaction.response.send_message(
+                embed=ui.simple("🎧 Nada tocando pra filtrar.", color=ui.WARN),
+                ephemeral=True,
+            )
+
+        audio_filter = AudioFilter(preset.value)
+        player.apply_filter(audio_filter)
+        detail = (
+            "Aplicado à faixa atual."
+            if audio_filter != AudioFilter.NONE
+            else "Filtro removido."
+        )
+        await interaction.response.send_message(
+            embed=ui.simple(f"🎛️ Filtro: {FILTER_LABELS[audio_filter]}", detail, color=ui.OK)
         )
 
     @app_commands.command(

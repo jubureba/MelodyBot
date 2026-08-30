@@ -8,6 +8,8 @@ from dataclasses import dataclass
 import discord
 import yt_dlp
 
+from .filters import AudioFilter, ffmpeg_options
+
 # Opcoes do yt-dlp: pega so o melhor audio, sem baixar o arquivo (streaming).
 _YTDL_OPTS = {
     "format": "bestaudio/best",
@@ -17,12 +19,6 @@ _YTDL_OPTS = {
     "default_search": "ytsearch",
     "source_address": "0.0.0.0",
     "skip_download": True,
-}
-
-# FFmpeg: reconexao em caso de queda de stream + so audio.
-_FFMPEG_OPTS = {
-    "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5",
-    "options": "-vn",
 }
 
 _ytdl = yt_dlp.YoutubeDL(_YTDL_OPTS)
@@ -86,7 +82,11 @@ async def resolve_query(query: str, requester_id: int) -> Track:
     )
 
 
-def make_audio_source(track: Track, volume: float = 0.5) -> discord.AudioSource:
-    """Cria a fonte de audio FFmpeg para um Track."""
-    source = discord.FFmpegPCMAudio(track.url, **_FFMPEG_OPTS)
+def make_audio_source(
+    track: Track,
+    volume: float = 0.5,
+    audio_filter: AudioFilter = AudioFilter.NONE,
+) -> discord.AudioSource:
+    """Cria a fonte de audio FFmpeg para um Track, com filtro opcional."""
+    source = discord.FFmpegPCMAudio(track.url, **ffmpeg_options(audio_filter))
     return discord.PCMVolumeTransformer(source, volume=volume)

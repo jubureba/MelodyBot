@@ -21,6 +21,8 @@ Enquanto os bots gigantes só tocam o que você manda, o MelodyBot **entende o m
 - 📻 **Rádio inteligente (`/autoplay`)**: quando a fila acaba, o bot continua com faixas coerentes com o histórico do servidor. *(Premium)*
 - 📊 **`/wrapped`**: retrospectiva estilo "Wrapped" — as mais tocadas e quem mais pediu no servidor.
 - 🗳️ **Vote-skip democrático**: pular exige maioria dos ouvintes (quem pediu ou canal pequeno pula direto).
+- 🎛️ **Filtros de áudio** (`/filter`): bass boost, nightcore, vaporwave, 8D e treble. *(Premium)*
+- 💾 **Playlists salvas** (`/playlist`): salve a fila e recarregue quando quiser. *(Premium)*
 
 ## 🎧 Base
 
@@ -46,6 +48,8 @@ Enquanto os bots gigantes só tocam o que você manda, o MelodyBot **entende o m
 | `/plan` | Plano atual do servidor | Free |
 | `/vibe <clima>` | DJ com IA monta a fila | ✨ Premium |
 | `/autoplay` | Liga/desliga o rádio inteligente | ✨ Premium |
+| `/filter <preset>` | Filtros de áudio (bass boost, nightcore…) | ✨ Premium |
+| `/playlist save\|load\|list\|delete` | Playlists salvas do servidor | ✨ Premium |
 | `/premium` | Assina o Premium | — |
 
 ## 🚀 Rodando localmente
@@ -104,7 +108,7 @@ AI_PROVIDER=gemini
 GEMINI_API_KEY=sua_chave        # nunca comite isso
 ```
 
-Requer o SDK: `pip install google-generativeai`. A IA recebe o histórico
+Requer o SDK: `pip install google-genai`. A IA recebe o histórico
 recente do servidor como contexto, então as sugestões acompanham o gosto de
 cada comunidade. Outros modelos podem ser adicionados implementando
 `AIProvider` em `melodybot/ai/`.
@@ -143,10 +147,10 @@ melodybot/
   plans.py           planos e limites de features
   ui.py              painel unico do player + embeds
   webhook.py         servidor aiohttp de confirmacao de pagamento
-  music/             track (yt-dlp), player (fila), manager
+  music/             track (yt-dlp), player (fila), filters, manager
   payments/          provider abstrato + mercadopago + noop
   ai/                provider abstrato + gemini + noop (DJ inteligente)
-  cogs/              music, premium, dj (vibe/autoplay/wrapped)
+  cogs/              music, premium, dj (vibe/autoplay/filter/wrapped), playlist
 ```
 
 Feito por [Anderson Lima](https://github.com/jubureba) · Licença MIT

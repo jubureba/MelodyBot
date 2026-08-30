@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 
 import discord
@@ -94,6 +95,34 @@ class MusicCog(commands.Cog):
         self.autoplay_guilds: set[int] = set()
         # Evita disparar autoplay concorrente na mesma guild.
         self._autoplay_busy: set[int] = set()
+        # Segundos sozinho no canal antes de desconectar (economia de recurso).
+        self._idle_timeout = 120
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(
+        self,
+        _member: discord.Member,
+        _before: discord.VoiceState,
+        _after: discord.VoiceState,
+    ) -> None:
+        """Desconecta se o bot ficar sozinho no canal por um tempo."""
+        for vc in list(self.bot.voice_clients):
+            if not isinstance(vc, discord.VoiceClient) or vc.channel is None:
+                continue
+            humans = [m for m in vc.channel.members if not m.bot]
+            if humans:
+                continue
+            # Ninguem no canal: agenda checagem apos o timeout.
+            await asyncio.sleep(self._idle_timeout)
+            if vc.is_connected():
+                still_alone = not any(not m.bot for m in vc.channel.members)
+                if still_alone:
+                    player = self.bot.players.get_if_exists(vc.guild.id)
+                    if player is not None:
+                        player.stop()
+                        player.panel_message = None
+                    await vc.disconnect()
+                    log.info("Desconectei de %s por inatividade", vc.guild.id)
 
     async def _maybe_autoplay(self, player: GuildPlayer) -> None:
         """Se autoplay estiver ligado e a fila baixa, enfileira faixa relacionada via IA."""

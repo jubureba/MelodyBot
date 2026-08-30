@@ -1,0 +1,5 @@
+# Dependencias completas: base + features opcionais (IA e pagamento).
+# Use este arquivo quando for rodar com /vibe, /autoplay e /premium ativos.
+-r requirements.txt
+google-genai>=1.0.0
+mercadopago>=3.5.0
