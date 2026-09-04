@@ -59,6 +59,10 @@ class Settings:
 
     ai_provider: str = "none"
     gemini_api_key: str = ""
+    gemini_model: str = "gemini-3.6-flash"
+
+    ytdl_player_client: str = "android"
+    ytdl_cookies_file: str = "data/cookies.txt"
 
     log_level: str = "INFO"
 
@@ -90,5 +94,8 @@ class Settings:
             premium_price_brl=_get_float("PREMIUM_PRICE_BRL", 9.90),
             ai_provider=os.getenv("AI_PROVIDER", "none").strip(),
             gemini_api_key=os.getenv("GEMINI_API_KEY", "").strip(),
+            gemini_model=os.getenv("GEMINI_MODEL", "gemini-3.6-flash").strip(),
+            ytdl_player_client=os.getenv("YTDL_PLAYER_CLIENT", "android").strip(),
+            ytdl_cookies_file=os.getenv("YTDL_COOKIES_FILE", "data/cookies.txt").strip(),
             log_level=os.getenv("LOG_LEVEL", "INFO").strip().upper(),
         )
