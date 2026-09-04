@@ -1,9 +1,16 @@
 FROM python:3.11-slim
 
 # FFmpeg e necessario para o streaming de audio.
+# curl/unzip para instalar o Deno (runtime JS usado pelo yt-dlp para resolver
+# o "n challenge"/assinatura do YouTube; sem ele os formatos ficam indisponiveis).
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ffmpeg \
+    && apt-get install -y --no-install-recommends ffmpeg curl unzip ca-certificates \
     && rm -rf /var/lib/apt/lists/*
+
+# Instala o Deno (runtime JS) em /usr/local/bin para o yt-dlp encontrar no PATH.
+ENV DENO_INSTALL=/usr/local
+RUN curl -fsSL https://deno.land/install.sh | sh \
+    && deno --version
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
