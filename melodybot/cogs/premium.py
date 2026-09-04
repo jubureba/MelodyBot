@@ -36,7 +36,7 @@ class PremiumCog(commands.Cog):
         )
 
         guild_icon = interaction.guild.icon.url if interaction.guild.icon else None
-        emb = ui.base_embed(ui.GOLD if is_premium else ui.ACCENT)
+        emb = discord.Embed(color=ui.GOLD if is_premium else ui.ACCENT)
         emb.set_author(name=f"Plano do servidor · {PLAN_LABELS[plan]}", icon_url=guild_icon)
         emb.title = "✨ Premium ativo" if is_premium else "📦 Plano Free"
         emb.add_field(name="🎶 Fila", value=queue, inline=True)
@@ -58,7 +58,7 @@ class PremiumCog(commands.Cog):
         )
         emb.add_field(name="\u200b", value="\u200b", inline=True)
         if not is_premium:
-            emb.set_footer(text="Use /premium para desbloquear tudo · " + ui.FOOTER_TEXT)
+            emb.set_footer(text="Use /premium para desbloquear tudo")
         await interaction.response.send_message(embed=emb)
 
     @app_commands.command(name="premium", description="Assine o Premium e libere tudo.")
@@ -67,7 +67,7 @@ class PremiumCog(commands.Cog):
             return await interaction.response.send_message("Use em um servidor.", ephemeral=True)
 
         price = self.bot.settings.premium_price_brl
-        emb = ui.base_embed(ui.GOLD)
+        emb = discord.Embed(color=ui.GOLD)
         emb.set_author(name="MelodyBot Premium")
         emb.title = "✨ Desbloqueie tudo"
         emb.description = (
@@ -82,7 +82,7 @@ class PremiumCog(commands.Cog):
         emb.add_field(name="⏳ Duração", value="30 dias", inline=True)
 
         if not self.bot.payments.enabled:
-            emb.set_footer(text="Pagamentos ainda não configurados neste bot. · " + ui.FOOTER_TEXT)
+            emb.set_footer(text="Pagamentos ainda não configurados neste bot.")
             return await interaction.response.send_message(embed=emb, ephemeral=True)
 
         await interaction.response.defer(ephemeral=True)
