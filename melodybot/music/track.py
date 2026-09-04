@@ -12,9 +12,10 @@ import yt_dlp
 from .filters import AudioFilter, ffmpeg_options
 
 # Client do "player" do YouTube usado pelo yt-dlp. Em IPs de datacenter (cloud),
-# o YouTube costuma exigir login ("Sign in to confirm you're not a bot"); usar
-# um client alternativo (android/ios/tv) geralmente contorna sem cookies.
-_YTDL_PLAYER_CLIENT = os.getenv("YTDL_PLAYER_CLIENT", "android").strip() or "android"
+# Client do "player" do YouTube. Vazio = deixa o yt-dlp escolher (recomendado);
+# em alguns casos um client fixo (android/ios/tv/web) ajuda, mas forcar pode
+# esconder formatos de audio. So aplica se explicitamente definido no ambiente.
+_YTDL_PLAYER_CLIENT = os.getenv("YTDL_PLAYER_CLIENT", "").strip()
 
 # Arquivo de cookies (formato Netscape) opcional. Se existir, e usado para
 # autenticar no YouTube e evitar o bloqueio antibot. Nunca comite este arquivo.
@@ -23,17 +24,20 @@ _YTDL_COOKIES_FILE = os.getenv("YTDL_COOKIES_FILE", "data/cookies.txt").strip()
 # Opcoes do yt-dlp: pega so o melhor audio, sem baixar o arquivo (streaming).
 _YTDL_OPTS: dict = {
     # Tolerante: prioriza audio puro, mas aceita qualquer melhor formato
-    # disponivel (o FFmpeg extrai so o audio). Evita "Requested format is not
-    # available" quando o YouTube nao expoe um stream audio-only ideal.
+    # disponivel (o FFmpeg extrai so o audio).
     "format": "bestaudio/bestaudio*/best",
     "noplaylist": True,
     "quiet": True,
     "no_warnings": True,
     "default_search": "ytsearch",
-    "source_address": "0.0.0.0",
     "skip_download": True,
-    "extractor_args": {"youtube": {"player_client": [_YTDL_PLAYER_CLIENT]}},
 }
+
+# player_client fixo so quando pedido explicitamente (senao o yt-dlp decide).
+if _YTDL_PLAYER_CLIENT:
+    _YTDL_OPTS["extractor_args"] = {
+        "youtube": {"player_client": [_YTDL_PLAYER_CLIENT]}
+    }
 
 # So anexa o cookiefile se o arquivo realmente existir (evita erro do yt-dlp).
 if _YTDL_COOKIES_FILE and os.path.isfile(_YTDL_COOKIES_FILE):
