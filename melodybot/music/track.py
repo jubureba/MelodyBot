@@ -22,7 +22,10 @@ _YTDL_COOKIES_FILE = os.getenv("YTDL_COOKIES_FILE", "data/cookies.txt").strip()
 
 # Opcoes do yt-dlp: pega so o melhor audio, sem baixar o arquivo (streaming).
 _YTDL_OPTS: dict = {
-    "format": "bestaudio/best",
+    # Tolerante: prioriza audio puro, mas aceita qualquer melhor formato
+    # disponivel (o FFmpeg extrai so o audio). Evita "Requested format is not
+    # available" quando o YouTube nao expoe um stream audio-only ideal.
+    "format": "bestaudio/bestaudio*/best",
     "noplaylist": True,
     "quiet": True,
     "no_warnings": True,
